@@ -6,8 +6,8 @@ Hack wifi using termux (rooted)
 ```bash
 pkg update && pkg upgrade -y
 pkg install root-repo -y
-pkg install git tsu python termux-api wpa-supplicant pixiewps iw -y
-git clone https://github.com/illusionghost3/wipwn
+pkg install git tsu python wpa-supplicant pixiewps iw -y
+git clone https://github.com/anbuinfosec/wipwn
 cd wipwn
 chmod +x main.py
 ```
@@ -31,8 +31,8 @@ chmod +x main.py
 
 ### Thanks For Star🙏👨‍💻
 
-[![Stargazers repo](https://reporoster.com/stars/illusionghost3/wipwn)](https://github.com/illusionghost3/wipwn/stargazers)
+[![Stargazers repo](https://reporoster.com/stars/anbuinfosec/wipwn)](https://github.com/anbuinfosec/wipwn/stargazers)
 
 ### Thanks For Fork 🙏👨‍💻
 
-[![Forkers repo](https://reporoster.com/forks/illusionghost3/wipwn)](https://github.com/illusionghost3/wipwn/network/members)
+[![Forkers repo](https://reporoster.com/forks/anbuinfosec/wipwn)](https://github.com/anbuinfosec/wipwn/network/members)
