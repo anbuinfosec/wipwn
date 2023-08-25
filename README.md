@@ -28,11 +28,8 @@ chmod +x main.py
 ### Troubleshooting
 **"Device or resource busy (-16)" - Turn on Wifi and Then Turn off Wifi.**
 
+---
 
-### Thanks For Star🙏👨‍💻
-
-[![Stargazers repo](https://reporoster.com/stars/anbuinfosec/wipwn)](https://github.com/anbuinfosec/wipwn/stargazers)
-
-### Thanks For Fork 🙏👨‍💻
-
-[![Forkers repo](https://reporoster.com/forks/anbuinfosec/wipwn)](https://github.com/anbuinfosec/wipwn/network/members)
+### ❤️ Thanks for stars and forks
+[![Forkers repo roster for @anbuinfosec/wipwn](https://reporoster.com/forks/dark/anbuinfosec/wipwn)](https://github.com/anbuinfosec/wipwn/network/members)
+[![Stargazers repo roster for @anbuinfosec/wipwn](https://reporoster.com/stars/dark/anbuinfosec/wipwn)](https://github.com/anbuinfosec/wipwn/stargazers)
