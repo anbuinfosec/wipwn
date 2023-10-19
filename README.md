@@ -1,6 +1,17 @@
-# WIPWN
-Hack wifi using termux (rooted)
+<p align="center">
+  <a href="https://github.com/anbuinfosec/wipwn">
+    <img src="images/image.png" alt="Logo" width="85" height="85">
+  </a>
 
+  <h3 align="center">WIPWN</h3>
+
+  <p align="center">Hack wifi using termux (rooted) </p>
+    
+- [Requirements]
+  - [Python](https://www.python.org)
+  - [Pixiewps](https://www.kali.org/tools/pixiewps/)
+  - [Wpa-supplicant](https://wiki.archlinux.org/title/wpa_supplicant)
+ 
 ### Installation :
 
 ```bash
