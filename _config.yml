@@ -1,1 +1,10 @@
-theme: cayman
+title: WIPWN
+author:
+  name: Mohammad Alamin
+  email: anbuinfosec@gmail.com
+  
+theme: minima
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
