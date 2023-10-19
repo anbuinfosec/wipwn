@@ -1,11 +1,8 @@
-<p align="center">
-  <a href="https://github.com/anbuinfosec/wipwn">
-    <img src="images/image.png" alt="Logo" width="85" height="85">
-  </a>
+# WIPWN
 
-  <h3 align="center">WIPWN</h3>
+![Logo](images/image.png)
 
-  <p align="center">Hack wifi using termux (rooted) </p>
+### Hack wifi using Termux (rooted)
     
 - [Requirements]
   - [Python](https://www.python.org)
