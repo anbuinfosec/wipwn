@@ -1,0 +1,24 @@
+# Site settings
+title: "WIPWN"
+description: "Hack WiFi using Termux (rooted)"
+baseurl: "/base"
+
+# Theme settings
+theme: "minima"  # Use the stylish "Minima" theme
+
+# Plugins
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+
+# Author information
+author:
+  name: "Mohammad Alamin"
+  bio: "Backend Programmer"
+  email: "anbuinfosec@gmail.com"
+  github: "anbuinfosec"
+  facebook: "anbuinfosec"
+  linkedin: "anbuinfosec"
+  telegram: "anbuinfosec"
+  youtube: "akxvau"
+  
