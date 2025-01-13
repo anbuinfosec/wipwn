@@ -1,6 +1,6 @@
 # WIPWN
 
-![Logo](images/image.png)
+![Logo](assets/image.png)
 
 ### Hack wifi using Termux (rooted)
     
