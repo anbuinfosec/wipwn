@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WIPWN Documentation</title>
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/anbuinfosec/wipwn/refs/heads/main/images/image.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container my-5">
+        <header class="text-center mb-5">
+            <img src="https://raw.githubusercontent.com/anbuinfosec/wipwn/refs/heads/main/images/image.png" alt="Logo" class="mb-3" style="max-width: 150px;">
+            <h1>WIPWN</h1>
+            <p>Hack WiFi using Termux (rooted)</p>
+        </header>
+
+        <section class="mb-5">
+            <h2>Requirements</h2>
+            <ul>
+                <li><a href="https://www.python.org" target="_blank">Python</a></li>
+                <li><a href="https://www.kali.org/tools/pixiewps/" target="_blank">Pixiewps</a></li>
+                <li><a href="https://wiki.archlinux.org/title/wpa_supplicant" target="_blank">Wpa-supplicant</a></li>
+            </ul>
+        </section>
+
+        <section class="mb-5">
+            <h2>Installation</h2>
+            <div class="mb-3">
+                <button class="btn btn-outline-primary btn-sm copy-btn" data-copy="pkg update && pkg upgrade -y">Copy</button>
+                <code>pkg update && pkg upgrade -y</code>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-outline-primary btn-sm copy-btn" data-copy="pkg install root-repo -y">Copy</button>
+                <code>pkg install root-repo -y</code>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-outline-primary btn-sm copy-btn" data-copy="pkg install git tsu python wpa-supplicant pixiewps iw -y">Copy</button>
+                <code>pkg install git tsu python wpa-supplicant pixiewps iw -y</code>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-outline-primary btn-sm copy-btn" data-copy="git clone https://github.com/anbuinfosec/wipwn">Copy</button>
+                <code>git clone https://github.com/anbuinfosec/wipwn</code>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-outline-primary btn-sm copy-btn" data-copy="cd wipwn">Copy</button>
+                <code>cd wipwn</code>
+            </div>
+            <div>
+                <button class="btn btn-outline-primary btn-sm copy-btn" data-copy="chmod +x main.py">Copy</button>
+                <code>chmod +x main.py</code>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2>Usage</h2>
+            <p>Help: <code>sudo python main --help</code></p>
+            <p>Example: <code>sudo python main.py -i wlan0 -K</code></p>
+        </section>
+
+        <section class="mb-5">
+            <h2>Note</h2>
+            <ul>
+                <li>First turn off your WiFi.</li>
+                <li>Turn on Hotspot.</li>
+                <li>Turn on Location.</li>
+            </ul>
+        </section>
+
+        <section class="mb-5">
+            <h2>Commands</h2>
+            <div class="mb-3">
+                <button class="btn btn-outline-primary btn-sm copy-btn" data-copy="sudo python main.py -i wlan0 -K">Copy</button>
+                <code>sudo python main.py -i wlan0 -K</code>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-outline-primary btn-sm copy-btn" data-copy="bash wipwn.sh">Copy</button>
+                <code>bash wipwn.sh</code>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-outline-primary btn-sm copy-btn" data-copy="sudo python main.py -i wlan0 -b 00:91:4C:C3:AC:28 -K">Copy</button>
+                <code>sudo python main.py -i wlan0 -b 00:91:4C:C3:AC:28 -K</code>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-outline-primary btn-sm copy-btn" data-copy="sudo python main.py -i wlan0 -b 50:0F:F5:B0:08:05 -B -p 1234">Copy</button>
+                <code>sudo python main.py -i wlan0 -b 50:0F:F5:B0:08:05 -B -p 1234</code>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2>Troubleshooting</h2>
+            <p><strong>"Device or resource busy (-16)"</strong> - Turn on WiFi and then turn off WiFi.</p>
+        </section>
+
+        <section class="mb-5">
+            <h2>Screenshots</h2>
+            <div class="row">
+                <div class="col-md-3">
+                    <img src="https://raw.githubusercontent.com/anbuinfosec/anbuinfosec/refs/heads/main/assets/wipwn/1.jpg" class="img-fluid" alt="Banner">
+                </div>
+                <div class="col-md-3">
+                    <img src="https://raw.githubusercontent.com/anbuinfosec/anbuinfosec/refs/heads/main/assets/wipwn/2.jpg" class="img-fluid" alt="Cracked">
+                </div>
+                <div class="col-md-3">
+                    <img src="https://raw.githubusercontent.com/anbuinfosec/anbuinfosec/refs/heads/main/assets/wipwn/3.jpg" class="img-fluid" alt="Saved Data">
+                </div>
+                <div class="col-md-3">
+                    <img src="https://raw.githubusercontent.com/anbuinfosec/anbuinfosec/refs/heads/main/assets/wipwn/4.jpg" class="img-fluid" alt="Config.txt">
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center mt-5">
+            <h3>❤️ Thanks for Stars and Forks</h3>
+            <a href="https://github.com/anbuinfosec/wipwn/stargazers" target="_blank">
+                <img src="https://reporoster.com/stars/dark/anbuinfosec/wipwn" alt="Stargazers">
+            </a>
+            <a href="https://github.com/anbuinfosec/wipwn/network/members" target="_blank">
+                <img src="https://reporoster.com/forks/dark/anbuinfosec/wipwn" alt="Forkers">
+            </a>
+
+            <div class="mt-4">
+                <h5>Follow the Developer</h5>
+                <a href="https://facebook.com/anbuinfosec" target="_blank" class="me-3">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" alt="GitHub" style="width: 30px;">
+                </a>
+                <a href="https://github.com/anbuinfosec" target="_blank" class="me-3">
+                    <img src="https://cdn-icons-png.flaticon.com/512/733/733553.png" alt="GitHub" style="width: 30px;">
+                </a>
+                <a href="https://twitter.com/anbuinfosec" target="_blank" class="me-3">
+                    <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter" style="width: 30px;">
+                </a>
+                <a href="https://www.linkedin.com/in/anbuinfosec" target="_blank">
+                    <img src="https://cdn-icons-png.flaticon.com/512/733/733561.png" alt="LinkedIn" style="width: 30px;">
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

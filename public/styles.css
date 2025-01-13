@@ -1,0 +1,78 @@
+body {
+	background: linear-gradient(
+		-45deg,
+		#ffffff,
+		#ffe4e9,
+		#fcc8e2,
+		#f6baed,
+		#efb0ff,
+		#d3a2ff,
+		#8eb8ff,
+		#91efff,
+		#d5f9ff
+	);
+	background-size: 800% 800%;
+	animation: gradient 9s ease infinite;
+	height: 100vh;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.container {
+	background: rgba(255, 255, 255, 0.85);
+	border-radius: 8px;
+	padding: 20px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header img {
+	border-radius: 50%;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+section {
+	margin-bottom: 40px;
+}
+
+.copy-btn {
+	margin-right: 10px;
+}
+
+footer {
+	margin-top: 20px;
+	padding: 20px;
+	text-align: center;
+	background: rgba(255, 255, 255, 0.9);
+	border-radius: 12px;
+	box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+footer h3 {
+	font-size: 1.5rem;
+	color: #333;
+	margin-bottom: 15px;
+}
+
+footer a {
+	margin: 0 10px;
+	display: inline-block;
+}
+
+footer img {
+	max-width: 500px;
+	transition: transform 0.3s ease;
+}
+
+footer img:hover {
+	transform: scale(1.1);
+}
