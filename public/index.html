@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WIPWN Documentation</title>
-    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/anbuinfosec/wipwn/refs/heads/main/images/image.png">
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/anbuinfosec/wipwn/refs/heads/main/assets/image.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/styles.css">
+    <link rel="stylesheet" href="./styles.css">
     <style>
         body {
             background-color: #f8f9fa;
@@ -50,12 +50,16 @@
             margin-top: 20px;
             font-size: 14px;
         }
+        .icon {
+            width: 20px;
+            margin-right: 8px;
+        }
     </style>
 </head>
 <body>
     <div class="container my-5">
         <header class="text-center mb-5">
-            <img src="https://raw.githubusercontent.com/anbuinfosec/wipwn/refs/heads/main/images/image.png" alt="Logo" class="mb-3">
+            <img src="https://raw.githubusercontent.com/anbuinfosec/wipwn/refs/heads/main/assets/image.png" alt="Logo" class="mb-3">
             <h1>WIPWN</h1>
             <p>Hack WiFi using Termux (rooted)</p>
         </header>
@@ -157,8 +161,8 @@
 
         <section class="mb-5">
             <h2>GitHub Issues</h2>
-            <p>Total issues: <span id="total-issues">Loading...</span></p>
-            <p>Fixed issues: <span id="fixed-issues">Loading...</span></p>
+            <p><img src="https://img.icons8.com/?size=100&id=360&format=png&color=000000" class="icon" alt="issue icon">Total issues: <span id="total-issues">Loading...</span></p>
+            <p><img src="https://img.icons8.com/ios-filled/50/000000/checkmark.png" class="icon" alt="checkmark icon">Fixed issues: <span id="fixed-issues">Loading...</span></p>
         </section>
 
         <footer class="text-center mt-5">
@@ -189,7 +193,7 @@
         </footer>
     </div>
 
-    <script src="/assets/scripts.js"></script>
+    <script src="./scripts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
@@ -197,12 +201,17 @@
             .then(response => response.json())
             .then(data => {
                 const totalIssues = data.length;
-                const fixedIssues = data.filter(issue => issue.state === 'closed').length;
-
                 document.getElementById('total-issues').innerText = totalIssues;
+            })
+            .catch(error => console.error('Error fetching total issues:', error));
+
+        fetch('https://api.github.com/repos/anbuinfosec/wipwn/issues?state=closed')
+            .then(response => response.json())
+            .then(data => {
+                const fixedIssues = data.length;
                 document.getElementById('fixed-issues').innerText = fixedIssues;
             })
-            .catch(error => console.error('Error fetching GitHub issues:', error));
+            .catch(error => console.error('Error fetching fixed issues:', error));
     </script>
 </body>
 </html>
