@@ -1,217 +1,449 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WIPWN Documentation</title>
-    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/anbuinfosec/wipwn/refs/heads/main/assets/image.png">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./styles.css">
-    <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Arial', sans-serif;
-        }
-        .container {
-            max-width: 1000px;
-        }
-        header img {
-            max-width: 150px;
-        }
-        footer {
-            background-color: #343a40;
-            color: #fff;
-            padding: 40px 0;
-        }
-        footer a {
-            color: #fff;
-            text-decoration: none;
-        }
-        footer a:hover {
-            text-decoration: underline;
-        }
-        .social-icons a {
-            margin: 0 15px;
-            display: inline-block;
-        }
-        .copy-btn {
-            cursor: pointer;
-        }
-        .footer-links a {
-            color: #fff;
-            margin: 0 10px;
-            text-decoration: none;
-        }
-        .footer-links a:hover {
-            text-decoration: underline;
-        }
-        .footer-bottom {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-        }
-        .icon {
-            width: 20px;
-            margin-right: 8px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WIPWN - WiFi Pentesting Framework</title>
+  <style>
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      background: #121212;
+      color: #eee;
+      padding: 20px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    a {
+      color: #1e90ff;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    h1, h2, h3 {
+      text-align: center;
+      font-weight: 700;
+    }
+    h1 {
+      margin-bottom: 0.2em;
+    }
+    p.lead {
+      text-align: center;
+      font-size: 1.2rem;
+      margin-top: 0;
+      margin-bottom: 1.5em;
+      color: #ccc;
+    }
+
+    /* Centered badges */
+    .badges {
+      text-align: center;
+      margin-bottom: 2em;
+    }
+    .badges img {
+      margin: 0 10px;
+      vertical-align: middle;
+      max-height: 40px;
+      height: auto;
+      max-width: 150px;
+    }
+
+    /* Disclaimer */
+    .disclaimer {
+      background: #3a3a3a;
+      border-left: 6px solid #ff4500;
+      padding: 1em 1.2em;
+      margin: 2em 0;
+      font-weight: 600;
+      color: #ffbd99;
+      border-radius: 4px;
+    }
+
+    /* Features list */
+    ul.features {
+      max-width: 600px;
+      margin: 0 auto 3em;
+      padding-left: 1.2em;
+    }
+    ul.features li {
+      margin-bottom: 0.6em;
+      font-size: 1.1rem;
+      list-style: inside disc;
+    }
+
+    /* Details summary styling */
+    details {
+      background: #222;
+      border-radius: 6px;
+      padding: 1em 1.2em;
+      margin-bottom: 2em;
+      cursor: pointer;
+    }
+    details summary {
+      font-weight: 600;
+      font-size: 1.1rem;
+      outline: none;
+      list-style: none;
+      cursor: pointer;
+      user-select: none;
+    }
+    details[open] {
+      background: #2b2b2b;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 3em;
+    }
+    table, th, td {
+      border: 1px solid #444;
+    }
+    th, td {
+      padding: 0.7em 1em;
+      text-align: left;
+    }
+    th {
+      background: #1e1e1e;
+      font-weight: 700;
+    }
+    tbody tr:nth-child(odd) {
+      background: #1a1a1a;
+    }
+
+    /* Screenshots grid */
+    .screenshots {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+      gap: 1em;
+      margin-bottom: 3em;
+    }
+    .screenshots img {
+      width: 100%;
+      border-radius: 6px;
+      box-shadow: 0 0 8px #000a;
+      transition: transform 0.2s ease;
+      cursor: pointer;
+    }
+    .screenshots img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #1e90ffaa;
+    }
+    .caption {
+      text-align: center;
+      margin-top: 0.3em;
+      font-size: 0.9rem;
+      color: #999;
+    }
+
+    /* File structure code box */
+    pre {
+      background: #1e1e1e;
+      padding: 1em;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      margin-bottom: 3em;
+    }
+
+    /* Contact & footer */
+    .contact {
+      text-align: center;
+      margin-bottom: 3em;
+    }
+    .contact a {
+      display: inline-block;
+      margin: 0 1em 0.5em 1em;
+      font-weight: 600;
+      color: #1e90ff;
+    }
+
+    /* Star & Follow badges container */
+    .star-follow {
+      text-align: center;
+      margin-bottom: 3em;
+    }
+    .star-follow a {
+      display: inline-block;
+      margin: 0 1em;
+    }
+    .star-follow img {
+      height: 50px;
+      max-width: 150px;
+      transition: filter 0.2s ease;
+      filter: drop-shadow(0 0 2px #000);
+    }
+    .star-follow img:hover {
+      filter: drop-shadow(0 0 6px #1e90ff);
+    }
+
+    /* License & Author */
+    .license, .author {
+      text-align: center;
+      margin-bottom: 2em;
+      color: #bbb;
+      font-size: 0.9rem;
+    }
+
+    blockquote {
+      font-style: italic;
+      text-align: center;
+      margin: 3em 1em;
+      color: #888;
+    }
+  </style>
 </head>
 <body>
-    <div class="container my-5">
-        <header class="text-center mb-5">
-            <img src="https://raw.githubusercontent.com/anbuinfosec/wipwn/refs/heads/main/assets/image.png" alt="Logo" class="mb-3">
-            <h1>WIPWN</h1>
-            <p>Hack WiFi using Termux (rooted)</p>
-        </header>
 
-        <section class="mb-5">
-            <h2>Requirements</h2>
-            <ul>
-                <li><a href="https://www.python.org" target="_blank">Python</a></li>
-                <li><a href="https://www.kali.org/tools/pixiewps/" target="_blank">Pixiewps</a></li>
-                <li><a href="https://wiki.archlinux.org/title/wpa_supplicant" target="_blank">Wpa-supplicant</a></li>
-            </ul>
-        </section>
+  <h1>⚡ WIPWN - WiFi Pentesting Framework</h1>
 
-        <section class="mb-5">
-            <h2>Installation</h2>
-            <div class="mb-3">
-                <button class="btn btn-outline-primary btn-sm copy-btn" data-copy="pkg update && pkg upgrade -y">Copy</button>
-                <code>pkg update && pkg upgrade -y</code>
-            </div>
-            <div class="mb-3">
-                <button class="btn btn-outline-primary btn-sm copy-btn" data-copy="pkg install root-repo -y">Copy</button>
-                <code>pkg install root-repo -y</code>
-            </div>
-            <div class="mb-3">
-                <button class="btn btn-outline-primary btn-sm copy-btn" data-copy="pkg install git tsu python wpa-supplicant pixiewps iw -y">Copy</button>
-                <code>pkg install git tsu python wpa-supplicant pixiewps iw -y</code>
-            </div>
-            <div class="mb-3">
-                <button class="btn btn-outline-primary btn-sm copy-btn" data-copy="git clone https://github.com/anbuinfosec/wipwn">Copy</button>
-                <code>git clone https://github.com/anbuinfosec/wipwn</code>
-            </div>
-            <div class="mb-3">
-                <button class="btn btn-outline-primary btn-sm copy-btn" data-copy="cd wipwn">Copy</button>
-                <code>cd wipwn</code>
-            </div>
-            <div>
-                <button class="btn btn-outline-primary btn-sm copy-btn" data-copy="chmod +x main.py">Copy</button>
-                <code>chmod +x main.py</code>
-            </div>
-        </section>
+  <p class="lead">
+    Crack WPS. Audit WiFi. Learn Cybersecurity.<br />
+    <em>Built for Termux • Root Required • Ethical Use Only</em>
+  </p>
 
-        <section class="mb-5">
-            <h2>Usage</h2>
-            <p>Help: <code>sudo python main --help</code></p>
-            <p>Example: <code>sudo python main.py -i wlan0 -K</code></p>
-        </section>
+  <div class="badges">
+    <a href="https://github.com/anbuinfosec/wipwn/stargazers" target="_blank" rel="noopener">
+      <img src="https://img.shields.io/github/stars/anbuinfosec/wipwn?color=gold&style=for-the-badge" alt="GitHub Stars" />
+    </a>
+    <a href="https://github.com/anbuinfosec/wipwn/network/members" target="_blank" rel="noopener">
+      <img src="https://img.shields.io/github/forks/anbuinfosec/wipwn?color=blue&style=for-the-badge" alt="GitHub Forks" />
+    </a>
+    <a href="https://github.com/anbuinfosec" target="_blank" rel="noopener">
+      <img src="https://img.shields.io/github/followers/anbuinfosec?label=Follow%20Me&style=for-the-badge&logo=github" alt="GitHub Followers" />
+    </a>
+    <a href="https://github.com/anbuinfosec/wipwn/blob/main/LICENSE" target="_blank" rel="noopener">
+      <img src="https://img.shields.io/github/license/anbuinfosec/wipwn?style=for-the-badge&color=green" alt="License" />
+    </a>
+  </div>
 
-        <section class="mb-5">
-            <h2>Note</h2>
-            <ul>
-                <li>First turn off your WiFi.</li>
-                <li>Turn on Hotspot.</li>
-                <li>Turn on Location.</li>
-            </ul>
-        </section>
+  <section class="disclaimer" role="alert">
+    ⚠️ <strong>Disclaimer:</strong><br />
+    This tool is for <strong>educational and authorized penetration testing</strong> only.<br />
+    Do <strong>NOT</strong> use on unauthorized networks.<br />
+    The author is <strong>not responsible</strong> for any misuse.
+  </section>
 
-        <section class="mb-5">
-            <h2>Commands</h2>
-            <div class="mb-3">
-                <button class="btn btn-outline-primary btn-sm copy-btn" data-copy="sudo python main.py -i wlan0 -K">Copy</button>
-                <code>sudo python main.py -i wlan0 -K</code>
-            </div>
-            <div class="mb-3">
-                <button class="btn btn-outline-primary btn-sm copy-btn" data-copy="bash wipwn.sh">Copy</button>
-                <code>bash wipwn.sh</code>
-            </div>
-            <div class="mb-3">
-                <button class="btn btn-outline-primary btn-sm copy-btn" data-copy="sudo python main.py -i wlan0 -b 00:91:4C:C3:AC:28 -K">Copy</button>
-                <code>sudo python main.py -i wlan0 -b 00:91:4C:C3:AC:28 -K</code>
-            </div>
-            <div class="mb-3">
-                <button class="btn btn-outline-primary btn-sm copy-btn" data-copy="sudo python main.py -i wlan0 -b 50:0F:F5:B0:08:05 -B -p 1234">Copy</button>
-                <code>sudo python main.py -i wlan0 -b 50:0F:F5:B0:08:05 -B -p 1234</code>
-            </div>
-        </section>
+  <section>
+    <h2>✨ Features</h2>
+    <ul class="features">
+      <li>🔍 Scan WPS-enabled WiFi networks</li>
+      <li>⚡ Pixie Dust attack automation</li>
+      <li>🔓 Online WPS PIN bruteforce</li>
+      <li>💾 Auto-save cracked PINs and config</li>
+      <li>🧪 Bash launcher for quick access</li>
+      <li>🐧 Built for rooted Android + Termux</li>
+    </ul>
+  </section>
 
-        <section class="mb-5">
-            <h2>Troubleshooting</h2>
-            <p><strong>"Device or resource busy (-16)"</strong> - Turn on WiFi and then turn off WiFi.</p>
-        </section>
+  <details>
+    <summary><strong>📦 Requirements & Packages</strong></summary>
+    <p>✅ Rooted Android device<br />
+      ✅ Termux installed <a href="https://termux.com/" target="_blank" rel="noopener">Download here</a><br />
+      ✅ WiFi chipset with monitor mode<br />
+      ✅ Internet connection for setup</p>
 
-        <section class="mb-5">
-            <h2>Screenshots</h2>
-            <div class="row">
-                <div class="col-md-3">
-                    <img src="https://raw.githubusercontent.com/anbuinfosec/anbuinfosec/refs/heads/main/assets/wipwn/1.jpg" class="img-fluid" alt="Banner">
-                </div>
-                <div class="col-md-3">
-                    <img src="https://raw.githubusercontent.com/anbuinfosec/anbuinfosec/refs/heads/main/assets/wipwn/2.jpg" class="img-fluid" alt="Cracked">
-                </div>
-                <div class="col-md-3">
-                    <img src="https://raw.githubusercontent.com/anbuinfosec/anbuinfosec/refs/heads/main/assets/wipwn/3.jpg" class="img-fluid" alt="Saved Data">
-                </div>
-                <div class="col-md-3">
-                    <img src="https://raw.githubusercontent.com/anbuinfosec/anbuinfosec/refs/heads/main/assets/wipwn/4.jpg" class="img-fluid" alt="Config.txt">
-                </div>
-            </div>
-        </section>
+    <h3>📥 Required Termux Packages</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Package</th>
+          <th>Description</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>python</code></td>
+          <td>To run the main script</td>
+          <td><a href="https://wiki.termux.com/wiki/Python" target="_blank" rel="noopener">Termux Wiki</a></td>
+        </tr>
+        <tr>
+          <td><code>tsu</code></td>
+          <td>Root privileges in Termux</td>
+          <td><a href="https://wiki.termux.com/wiki/Termux-sudo" target="_blank" rel="noopener">Termux Wiki</a></td>
+        </tr>
+        <tr>
+          <td><code>iw</code></td>
+          <td>Wireless device management</td>
+          <td><a href="https://linux.die.net/man/8/iw" target="_blank" rel="noopener">Linux man page</a></td>
+        </tr>
+        <tr>
+          <td><code>pixiewps</code></td>
+          <td>Pixie Dust WPS attack tool</td>
+          <td><a href="https://tools.kali.org/wireless-attacks/pixiewps" target="_blank" rel="noopener">Kali Tools</a></td>
+        </tr>
+        <tr>
+          <td><code>openssl</code></td>
+          <td>Crypto operations</td>
+          <td><a href="https://wiki.termux.com/wiki/OpenSSL" target="_blank" rel="noopener">Termux Wiki</a></td>
+        </tr>
+        <tr>
+          <td><code>wpa_supplicant</code></td>
+          <td>WiFi authentication</td>
+          <td><a href="https://wiki.archlinux.org/title/wpa_supplicant" target="_blank" rel="noopener">Arch Wiki</a></td>
+        </tr>
+        <tr>
+          <td><code>git</code></td>
+          <td>Clone repository</td>
+          <td><a href="https://wiki.termux.com/wiki/Git" target="_blank" rel="noopener">Termux Wiki</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </details>
 
-        <section class="mb-5">
-            <h2>GitHub Issues</h2>
-            <p><img src="https://img.icons8.com/?size=100&id=360&format=png&color=000000" class="icon" alt="issue icon">Total issues: <span id="total-issues">Loading...</span></p>
-            <p><img src="https://img.icons8.com/ios-filled/50/000000/checkmark.png" class="icon" alt="checkmark icon">Fixed issues: <span id="fixed-issues">Loading...</span></p>
-        </section>
+  <section>
+    <h2>⚙️ Installation</h2>
+    <pre><code>pkg update && pkg upgrade -y
+pkg install root-repo -y
+pkg install git python wpa-supplicant pixiewps iw openssl -y
+# Install tsu for root access. If tsu not working, install sudo instead:
+pkg install tsu -y || pkg install sudo -y
+</code></pre>
 
-        <footer class="text-center mt-5">
-            <div class="footer-links mb-4">
-                <a href="https://github.com/anbuinfosec/wipwn" target="_blank">GitHub</a> |
-                <a href="https://github.com/anbuinfosec/wipwn/stargazers" target="_blank">Stars</a> |
-                <a href="https://github.com/anbuinfosec/wipwn/network/members" target="_blank">Forks</a>
-            </div>
+    <pre><code>git clone https://github.com/anbuinfosec/wipwn
+cd wipwn
+chmod +x main.py
+</code></pre>
+  </section>
 
-            <div class="social-icons mb-4">
-                <a href="https://facebook.com/anbuinfosec" target="_blank">
-                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" alt="Facebook" style="width: 30px;">
-                </a>
-                <a href="https://github.com/anbuinfosec" target="_blank">
-                    <img src="https://cdn-icons-png.flaticon.com/512/733/733553.png" alt="GitHub" style="width: 30px;">
-                </a>
-                <a href="https://twitter.com/anbuinfosec" target="_blank">
-                    <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter" style="width: 30px;">
-                </a>
-                <a href="https://www.linkedin.com/in/anbuinfosec" target="_blank">
-                    <img src="https://cdn-icons-png.flaticon.com/512/733/733561.png" alt="LinkedIn" style="width: 30px;">
-                </a>
-            </div>
+  <section>
+    <h2>🚀 Usage</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Command</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>sudo python main.py --help</code></td>
+          <td>Show help options</td>
+        </tr>
+        <tr>
+          <td><code>sudo python main.py -i wlan0 -K</code></td>
+          <td>Scan and auto attack</td>
+        </tr>
+        <tr>
+          <td><code>sudo python main.py -i wlan0 -b &lt;BSSID&gt; -K</code></td>
+          <td>Attack specific BSSID</td>
+        </tr>
+        <tr>
+          <td><code>sudo python main.py -i wlan0 -b &lt;BSSID&gt; -B -p 1234</code></td>
+          <td>Bruteforce using PIN prefix</td>
+        </tr>
+        <tr>
+          <td><code>bash wipwn.sh</code></td>
+          <td>Use Bash launcher</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
 
-            <div class="footer-bottom">
-                <p>❤️ Thanks for Stars and Forks</p>
-            </div>
-        </footer>
+  <section>
+    <h2>🛠 Troubleshooting</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Issue</th>
+          <th>Fix</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>Device or resource busy (-16)</code></td>
+          <td>Toggle WiFi ON → OFF and retry</td>
+        </tr>
+        <tr>
+          <td>No networks found</td>
+          <td>Turn on Hotspot + Location</td>
+        </tr>
+        <tr>
+          <td>Permission error</td>
+          <td>Use <code>tsu</code> or <code>sudo</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>🖼️ Screenshots</h2>
+    <div class="screenshots" role="list">
+      <figure>
+        <img src="https://raw.githubusercontent.com/anbuinfosec/anbuinfosec/refs/heads/main/assets/wipwn/1.jpg" alt="Scan Screenshot" loading="lazy" />
+        <figcaption class="caption">Scan</figcaption>
+      </figure>
+      <figure>
+        <img src="https://raw.githubusercontent.com/anbuinfosec/anbuinfosec/refs/heads/main/assets/wipwn/2.jpg" alt="Cracked PIN Screenshot" loading="lazy" />
+        <figcaption class="caption">Cracked PIN</figcaption>
+      </figure>
+      <figure>
+        <img src="https://raw.githubusercontent.com/anbuinfosec/anbuinfosec/refs/heads/main/assets/wipwn/3.jpg" alt="Saved Data Screenshot" loading="lazy" />
+        <figcaption class="caption">Saved Data</figcaption>
+      </figure>
+      <figure>
+        <img src="https://raw.githubusercontent.com/anbuinfosec/anbuinfosec/refs/heads/main/assets/wipwn/4.jpg" alt="Config Screenshot" loading="lazy" />
+        <figcaption class="caption">Config</figcaption>
+      </figure>
     </div>
+  </section>
 
-    <script src="./scripts.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <section>
+    <h2>🗂️ File Structure</h2>
+    <pre><code>📁 wipwn/
+├── assets/           → Logo and screenshots
+├── colors.py         → Terminal color helper
+├── config.txt        → Output config format
+├── LICENSE           → MIT License
+├── main.py           → Main WiFi attack script
+├── README.md         → Project documentation
+├── vulnwsc.txt       → Vulnerable BSSID database (sample)
+└── wipwn.sh          → Bash launcher script
+</code></pre>
+  </section>
 
-    <script>
-        fetch('https://api.github.com/repos/anbuinfosec/wipwn/issues')
-            .then(response => response.json())
-            .then(data => {
-                const totalIssues = data.length;
-                document.getElementById('total-issues').innerText = totalIssues;
-            })
-            .catch(error => console.error('Error fetching total issues:', error));
+  <section class="contact">
+    <h2>💬 Contact & Support</h2>
+    <p>
+      📧 <a href="mailto:anbuinfosec@gmail.com">anbuinfosec@gmail.com</a> | 
+      💬 <a href="https://t.me/anbuinfosec" target="_blank" rel="noopener">@anbuinfosec</a> | 
+      🌐 <a href="https://anbuinfosec.live" target="_blank" rel="noopener">anbuinfosec.live</a> | 
+      🐞 <a href="https://github.com/anbuinfosec/wipwn/issues" target="_blank" rel="noopener">Report issues</a>
+    </p>
+  </section>
 
-        fetch('https://api.github.com/repos/anbuinfosec/wipwn/issues?state=closed')
-            .then(response => response.json())
-            .then(data => {
-                const fixedIssues = data.length;
-                document.getElementById('fixed-issues').innerText = fixedIssues;
-            })
-            .catch(error => console.error('Error fetching fixed issues:', error));
-    </script>
+  <section class="star-follow" aria-label="Star and Fork badges">
+    <a href="https://github.com/anbuinfosec/wipwn/stargazers" target="_blank" rel="noopener" aria-label="GitHub Stargazers">
+      <img src="https://reporoster.com/stars/dark/anbuinfosec/wipwn" alt="Stargazers" />
+    </a>
+    <a href="https://github.com/anbuinfosec/wipwn/network/members" target="_blank" rel="noopener" aria-label="GitHub Forkers">
+      <img src="https://reporoster.com/forks/dark/anbuinfosec/wipwn" alt="Forkers" />
+    </a>
+  </section>
+
+  <section class="license">
+    <p>Licensed under the <a href="LICENSE" target="_blank" rel="noopener">MIT License</a>. You are free to use, modify, and distribute responsibly.</p>
+  </section>
+
+  <section class="author">
+    <p>Made with ❤️ by <strong>Mohammad Alamin</strong><br />
+    GitHub: <a href="https://github.com/anbuinfosec" target="_blank" rel="noopener">@anbuinfosec</a><br />
+    Email: <a href="mailto:anbuinfosec@gmail.com">anbuinfosec@gmail.com</a></p>
+  </section>
+
+  <blockquote>
+    💡 <em>“Ethical hacking is not a crime — it's knowledge in defense.”</em>
+  </blockquote>
+
 </body>
 </html>
