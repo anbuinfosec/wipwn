@@ -1,4 +1,4 @@
-name: 🚀 Deploy & Telegram Notify for WIPWN
+name: 🚀 Full Deploy & Telegram Notify for WIPWN
 
 on:
   push:
@@ -6,10 +6,17 @@ on:
   workflow_dispatch:
   issues:
     types: [opened]
+  issue_comment:
+    types: [created]
   watch:
     types: [started]
   fork:
     types: [created]
+  pull_request:
+    types: [opened, reopened, closed, merged]
+  workflow_run:
+    workflows: ["🚀 Full Deploy & Telegram Notify for WIPWN"]
+    types: [completed]
 
 permissions:
   contents: read
@@ -19,10 +26,7 @@ permissions:
 env:
   TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
   TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-
-concurrency:
-  group: "wipwn-pages"
-  cancel-in-progress: false
+  TZ: Asia/Dhaka
 
 jobs:
   deploy:
@@ -48,12 +52,22 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
+      - name: Get Repo Info
+        id: repo_info
+        run: |
+          repo=${GITHUB_REPOSITORY}
+          info=$(curl -s https://api.github.com/repos/$repo)
+          echo "STARS=$(echo \"$info\" | jq -r .stargazers_count)" >> $GITHUB_OUTPUT
+          echo "FORKS=$(echo \"$info\" | jq -r .forks_count)" >> $GITHUB_OUTPUT
+
       - name: 📬 Telegram Notification – Deployment
         run: |
+          NOW=$(date '+%Y-%m-%d %H:%M:%S')
           curl -s -X POST https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage \
             -d chat_id="${TELEGRAM_CHAT_ID}" \
-            -d text="🚀 *WIPWN Deployed!*\n\n📂 Repo: *anbuinfosec/wipwn*\n👤 By: *${{ github.actor }}*\n🔗 [View Site](${{ steps.deployment.outputs.page_url }})" \
-            -d parse_mode="Markdown"
+            -d parse_mode="Markdown" \
+            -d disable_web_page_preview=true \
+            -d text="➠ *Deployment Completed*\n➠ *Name:* ${{ github.actor }}\n➠ *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})\n➠ *Stars:* ${{ steps.repo_info.outputs.STARS }} | *Forks:* ${{ steps.repo_info.outputs.FORKS }}\n➠ *Time:* $NOW (Asia/Dhaka)\n\n[🔗 View Documentation](${{ steps.deployment.outputs.page_url }})"
 
   notify_issue:
     if: github.event_name == 'issues'
@@ -61,10 +75,27 @@ jobs:
     steps:
       - name: 🐞 Telegram Notification – New Issue
         run: |
+          NOW=$(date '+%Y-%m-%d %H:%M:%S')
           curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
             -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
-            -d text="🐞 *New Issue Created!*\n\n📂 Repo: *anbuinfosec/wipwn*\n👤 By: *${{ github.actor }}*\n📝 _${{ github.event.issue.title }}_\n🔗 [View Issue](${{ github.event.issue.html_url }})" \
-            -d parse_mode="Markdown"
+            -d parse_mode="Markdown" \
+            -d disable_web_page_preview=true \
+            -d text="➠ *New Issue Created*\n➠ *Name:* ${{ github.actor }}\n➠ *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})\n➠ *Title:* _${{ github.event.issue.title }}_\n➠ *Time:* $NOW (Asia/Dhaka)\n\n[🔗 View Issue](${{ github.event.issue.html_url }})"
+
+  notify_issue_comment:
+    if: github.event_name == 'issue_comment'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 💬 Telegram Notification – New Issue Comment
+        run: |
+          NOW=$(date '+%Y-%m-%d %H:%M:%S')
+          ISSUE_TITLE="${{ github.event.issue.title }}"
+          COMMENT_BODY=$(echo "${{ github.event.comment.body }}" | head -c 200)
+          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d parse_mode="Markdown" \
+            -d disable_web_page_preview=true \
+            -d text="➠ *New Comment on Issue*\n➠ *Name:* ${{ github.actor }}\n➠ *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})\n➠ *Issue:* _${ISSUE_TITLE}_\n➠ *Comment:* _${COMMENT_BODY}..._\n➠ *Time:* $NOW (Asia/Dhaka)\n\n[🔗 View Comment](${{ github.event.comment.html_url }})"
 
   notify_star:
     if: github.event_name == 'watch'
@@ -72,10 +103,12 @@ jobs:
     steps:
       - name: ⭐ Telegram Notification – New Star
         run: |
+          NOW=$(date '+%Y-%m-%d %H:%M:%S')
           curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
             -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
-            -d text="⭐ *New Star!* \n\n📂 Repo: *anbuinfosec/wipwn*\n👤 Starred by: *${{ github.actor }}*" \
-            -d parse_mode="Markdown"
+            -d parse_mode="Markdown" \
+            -d disable_web_page_preview=true \
+            -d text="➠ *New Star!*\n➠ *Name:* ${{ github.actor }}\n➠ *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})\n➠ *Time:* $NOW (Asia/Dhaka)\n\n⭐ Thank you!"
 
   notify_fork:
     if: github.event_name == 'fork'
@@ -83,7 +116,51 @@ jobs:
     steps:
       - name: 🍴 Telegram Notification – New Fork
         run: |
+          NOW=$(date '+%Y-%m-%d %H:%M:%S')
           curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
             -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
-            -d text="🍴 *New Fork!* \n\n📂 Repo: *anbuinfosec/wipwn*\n👤 Forked by: *${{ github.actor }}*" \
-            -d parse_mode="Markdown"
+            -d parse_mode="Markdown" \
+            -d disable_web_page_preview=true \
+            -d text="➠ *New Fork!*\n➠ *Name:* ${{ github.actor }}\n➠ *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})\n➠ *Time:* $NOW (Asia/Dhaka)\n\n🍴 Happy forking!"
+
+  notify_pull_request:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔀 Telegram Notification – Pull Request
+        run: |
+          NOW=$(date '+%Y-%m-%d %H:%M:%S')
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_URL="${{ github.event.pull_request.html_url }}"
+          ACTION="${{ github.event.action }}"
+          MERGED="${{ github.event.pull_request.merged }}"
+          MSG=""
+          if [ "$ACTION" = "opened" ] || [ "$ACTION" = "reopened" ]; then
+            MSG="➠ *Pull Request $ACTION*\n➠ *Name:* ${{ github.actor }}\n➠ *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})\n➠ *Title:* _${PR_TITLE}_\n➠ *Time:* $NOW (Asia/Dhaka)\n\n[🔗 View PR](${PR_URL})"
+          elif [ "$ACTION" = "closed" ] && [ "$MERGED" = "true" ]; then
+            MSG="➠ *Pull Request Merged*\n➠ *Name:* ${{ github.actor }}\n➠ *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})\n➠ *Title:* _${PR_TITLE}_\n➠ *Time:* $NOW (Asia/Dhaka)\n\n[🔗 View PR](${PR_URL})"
+          elif [ "$ACTION" = "closed" ] && [ "$MERGED" = "false" ]; then
+            MSG="➠ *Pull Request Closed*\n➠ *Name:* ${{ github.actor }}\n➠ *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})\n➠ *Title:* _${PR_TITLE}_\n➠ *Time:* $NOW (Asia/Dhaka)\n\n[🔗 View PR](${PR_URL})"
+          fi
+          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d parse_mode="Markdown" \
+            -d disable_web_page_preview=true \
+            -d text="$MSG"
+
+  notify_workflow_run:
+    if: github.event_name == 'workflow_run'
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⚙️ Telegram Notification – Workflow Completed
+        run: |
+          NOW=$(date '+%Y-%m-%d %H:%M:%S')
+          WORKFLOW_NAME="${{ github.event.workflow_run.name }}"
+          CONCLUSION="${{ github.event.workflow_run.conclusion }}"
+          URL="${{ github.event.workflow_run.html_url }}"
+          ACTOR="${{ github.event.workflow_run.actor.login }}"
+          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d parse_mode="Markdown" \
+            -d disable_web_page_preview=true \
+            -d text="➠ *Workflow Run Completed*\n➠ *Workflow:* _${WORKFLOW_NAME}_\n➠ *Status:* *${CONCLUSION}*\n➠ *Triggered by:* ${ACTOR}\n➠ *Time:* $NOW (Asia/Dhaka)\n\n[🔗 View Details](${URL})"
