@@ -1,0 +1,89 @@
+name: 🚀 Deploy & Telegram Notify for WIPWN
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+  issues:
+    types: [opened]
+  watch:
+    types: [started]
+  fork:
+    types: [created]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+env:
+  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+concurrency:
+  group: "wipwn-pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: 📦 Upload Static Files
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'public'
+
+      - name: 🚀 Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: 📬 Telegram Notification – Deployment
+        run: |
+          curl -s -X POST https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage \
+            -d chat_id="${TELEGRAM_CHAT_ID}" \
+            -d text="🚀 *WIPWN Deployed!*\n\n📂 Repo: *anbuinfosec/wipwn*\n👤 By: *${{ github.actor }}*\n🔗 [View Site](${{ steps.deployment.outputs.page_url }})" \
+            -d parse_mode="Markdown"
+
+  notify_issue:
+    if: github.event_name == 'issues'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🐞 Telegram Notification – New Issue
+        run: |
+          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d text="🐞 *New Issue Created!*\n\n📂 Repo: *anbuinfosec/wipwn*\n👤 By: *${{ github.actor }}*\n📝 _${{ github.event.issue.title }}_\n🔗 [View Issue](${{ github.event.issue.html_url }})" \
+            -d parse_mode="Markdown"
+
+  notify_star:
+    if: github.event_name == 'watch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⭐ Telegram Notification – New Star
+        run: |
+          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d text="⭐ *New Star!* \n\n📂 Repo: *anbuinfosec/wipwn*\n👤 Starred by: *${{ github.actor }}*" \
+            -d parse_mode="Markdown"
+
+  notify_fork:
+    if: github.event_name == 'fork'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🍴 Telegram Notification – New Fork
+        run: |
+          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d text="🍴 *New Fork!* \n\n📂 Repo: *anbuinfosec/wipwn*\n👤 Forked by: *${{ github.actor }}*" \
+            -d parse_mode="Markdown"
