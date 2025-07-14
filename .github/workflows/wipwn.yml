@@ -64,7 +64,13 @@ jobs:
             -d chat_id="${TELEGRAM_CHAT_ID}" \
             -d parse_mode="Markdown" \
             -d disable_web_page_preview=true \
-            -d text="➠ *Deployment Completed*\n➠ *Name:* ${{ github.actor }}\n➠ *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})\n➠ *Stars:* ${{ steps.repo_info.outputs.STARS }} | *Forks:* ${{ steps.repo_info.outputs.FORKS }}\n➠ *Time:* $NOW (Asia/Dhaka)\n\n[🔗 View Documentation](${{ steps.deployment.outputs.page_url }})"
+            -d text="➠ Deployment Completed
+➠ Name: ${{ github.actor }}
+➠ Repository: [${{ github.repository }}](https://github.com/${{ github.repository }})
+➠ Stars: ${{ steps.repo_info.outputs.STARS }} | Forks: ${{ steps.repo_info.outputs.FORKS }}
+➠ Time: $NOW (Asia/Dhaka)
+
+[🔗 View Documentation](${{ steps.deployment.outputs.page_url }})"
 
   notify_issue:
     if: github.event_name == 'issues'
@@ -77,7 +83,13 @@ jobs:
             -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
             -d parse_mode="Markdown" \
             -d disable_web_page_preview=true \
-            -d text="➠ *New Issue Created*\n➠ *Name:* ${{ github.actor }}\n➠ *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})\n➠ *Title:* _${{ github.event.issue.title }}_\n➠ *Time:* $NOW (Asia/Dhaka)\n\n[🔗 View Issue](${{ github.event.issue.html_url }})"
+            -d text="➠ New Issue Created
+➠ Name: ${{ github.actor }}
+➠ Repository: [${{ github.repository }}](https://github.com/${{ github.repository }})
+➠ Title: _${{ github.event.issue.title }}_
+➠ Time: $NOW (Asia/Dhaka)
+
+[🔗 View Issue](${{ github.event.issue.html_url }})"
 
   notify_issue_comment:
     if: github.event_name == 'issue_comment'
@@ -92,7 +104,14 @@ jobs:
             -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
             -d parse_mode="Markdown" \
             -d disable_web_page_preview=true \
-            -d text="➠ *New Comment on Issue*\n➠ *Name:* ${{ github.actor }}\n➠ *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})\n➠ *Issue:* _${ISSUE_TITLE}_\n➠ *Comment:* _${COMMENT_BODY}..._\n➠ *Time:* $NOW (Asia/Dhaka)\n\n[🔗 View Comment](${{ github.event.comment.html_url }})"
+            -d text="➠ New Comment on Issue
+➠ Name: ${{ github.actor }}
+➠ Repository: [${{ github.repository }}](https://github.com/${{ github.repository }})
+➠ Issue: _${ISSUE_TITLE}_
+➠ Comment: _${COMMENT_BODY}..._
+➠ Time: $NOW (Asia/Dhaka)
+
+[🔗 View Comment](${{ github.event.comment.html_url }})"
 
   notify_star:
     if: github.event_name == 'watch'
@@ -105,7 +124,12 @@ jobs:
             -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
             -d parse_mode="Markdown" \
             -d disable_web_page_preview=true \
-            -d text="➠ *New Star!*\n➠ *Name:* ${{ github.actor }}\n➠ *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})\n➠ *Time:* $NOW (Asia/Dhaka)\n\n⭐ Thank you!"
+            -d text="➠ New Star!
+➠ Name: ${{ github.actor }}
+➠ Repository: [${{ github.repository }}](https://github.com/${{ github.repository }})
+➠ Time: $NOW (Asia/Dhaka)
+
+⭐ Thank you!"
 
   notify_fork:
     if: github.event_name == 'fork'
@@ -118,7 +142,12 @@ jobs:
             -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
             -d parse_mode="Markdown" \
             -d disable_web_page_preview=true \
-            -d text="➠ *New Fork!*\n➠ *Name:* ${{ github.actor }}\n➠ *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})\n➠ *Time:* $NOW (Asia/Dhaka)\n\n🍴 Happy forking!"
+            -d text="➠ New Fork!
+➠ Name: ${{ github.actor }}
+➠ Repository: [${{ github.repository }}](https://github.com/${{ github.repository }})
+➠ Time: $NOW (Asia/Dhaka)
+
+🍴 Happy forking!"
 
   notify_pull_request:
     if: github.event_name == 'pull_request'
@@ -133,11 +162,29 @@ jobs:
           MERGED="${{ github.event.pull_request.merged }}"
           MSG=""
           if [ "$ACTION" = "opened" ] || [ "$ACTION" = "reopened" ]; then
-            MSG="➠ *Pull Request $ACTION*\n➠ *Name:* ${{ github.actor }}\n➠ *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})\n➠ *Title:* _${PR_TITLE}_\n➠ *Time:* $NOW (Asia/Dhaka)\n\n[🔗 View PR](${PR_URL})"
+            MSG="➠ Pull Request $ACTION
+➠ Name: ${{ github.actor }}
+➠ Repository: [${{ github.repository }}](https://github.com/${{ github.repository }})
+➠ Title: _${PR_TITLE}_
+➠ Time: $NOW (Asia/Dhaka)
+
+[🔗 View PR](${PR_URL})"
           elif [ "$ACTION" = "closed" ] && [ "$MERGED" = "true" ]; then
-            MSG="➠ *Pull Request Merged*\n➠ *Name:* ${{ github.actor }}\n➠ *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})\n➠ *Title:* _${PR_TITLE}_\n➠ *Time:* $NOW (Asia/Dhaka)\n\n[🔗 View PR](${PR_URL})"
+            MSG="➠ Pull Request Merged
+➠ Name: ${{ github.actor }}
+➠ Repository: [${{ github.repository }}](https://github.com/${{ github.repository }})
+➠ Title: _${PR_TITLE}_
+➠ Time: $NOW (Asia/Dhaka)
+
+[🔗 View PR](${PR_URL})"
           elif [ "$ACTION" = "closed" ] && [ "$MERGED" = "false" ]; then
-            MSG="➠ *Pull Request Closed*\n➠ *Name:* ${{ github.actor }}\n➠ *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})\n➠ *Title:* _${PR_TITLE}_\n➠ *Time:* $NOW (Asia/Dhaka)\n\n[🔗 View PR](${PR_URL})"
+            MSG="➠ Pull Request Closed
+➠ Name: ${{ github.actor }}
+➠ Repository: [${{ github.repository }}](https://github.com/${{ github.repository }})
+➠ Title: _${PR_TITLE}_
+➠ Time: $NOW (Asia/Dhaka)
+
+[🔗 View PR](${PR_URL})"
           fi
           curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
             -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
