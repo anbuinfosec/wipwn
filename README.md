@@ -22,6 +22,9 @@
   <a href="https://github.com/anbuinfosec/wipwn/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/anbuinfosec/wipwn?style=for-the-badge&color=green" />
   </a>
+  <a href="https://t.me/anbuinfosec_updates">
+    <img src="https://img.shields.io/badge/Telegram-Updates-blue?style=for-the-badge&logo=telegram" />
+  </a>
 </p>
 
 ---
