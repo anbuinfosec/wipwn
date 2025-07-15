@@ -5,13 +5,29 @@ on:
     branches: ["main"]
   workflow_dispatch:
   issues:
-    types: [opened]
+    types: [opened, edited, deleted, closed, reopened, labeled, unlabeled, assigned, unassigned]
   issue_comment:
-    types: [created]
+    types: [created, edited, deleted]
   watch:
+    types: [started]
   fork:
   pull_request:
-    types: [opened, reopened, closed]
+    types: [opened, reopened, closed, edited, ready_for_review, converted_to_draft, synchronize]
+  pull_request_review:
+    types: [submitted, edited, dismissed]
+  pull_request_review_comment:
+    types: [created, edited, deleted]
+  release:
+    types: [published, unpublished, created, edited, deleted, prereleased, released]
+  create:
+  delete:
+  workflow_run:
+    workflows: ["*"]
+    types: [completed, requested]
+  public:
+  status:
+  page_build:
+  gollum:
 
 permissions:
   contents: read
@@ -45,24 +61,80 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-      - name: Get Repo Info
+      - name: Get Advanced Repo Info
         id: repo_info
         run: |
           repo=${GITHUB_REPOSITORY}
           info=$(curl -s https://api.github.com/repos/$repo)
-          echo "STARS=$(echo \"$info\" | jq -r .stargazers_count)" >> $GITHUB_OUTPUT
-          echo "FORKS=$(echo \"$info\" | jq -r .forks_count)" >> $GITHUB_OUTPUT
-
-      - name: 📬 Telegram Notification – Deployment
-        run: |
-          NOW=$(date '+%Y-%m-%d %H:%M:%S')
-          TEXT="➠ Deployment Completed
-          ➠ Name: ${{ github.actor }}
-          ➠ Repository: [${{ github.repository }}](https://github.com/${{ github.repository }})
-          ➠ Stars: ${{ steps.repo_info.outputs.STARS }} | Forks: ${{ steps.repo_info.outputs.FORKS }}
-          ➠ Time: $NOW (Asia/Dhaka)
+          stars=$(echo "$info" | jq -r '.stargazers_count // 0')
+          forks=$(echo "$info" | jq -r '.forks_count // 0')
+          watchers=$(echo "$info" | jq -r '.watchers_count // 0')
+          issues=$(echo "$info" | jq -r '.open_issues_count // 0')
+          language=$(echo "$info" | jq -r '.language // "Unknown"')
+          size=$(echo "$info" | jq -r '.size // 0')
+          license=$(echo "$info" | jq -r '.license.name // "No License"')
+          description=$(echo "$info" | jq -r '.description // "No description"')
           
-          [🔗 View Documentation](${{ steps.deployment.outputs.page_url }})"
+          # Get commit info
+          commit_info=$(curl -s https://api.github.com/repos/$repo/commits/${GITHUB_SHA})
+          commit_message=$(echo "$commit_info" | jq -r '.commit.message // "No message"' | head -1)
+          commit_author=$(echo "$commit_info" | jq -r '.commit.author.name // "Unknown"')
+          commit_date=$(echo "$commit_info" | jq -r '.commit.author.date // "Unknown"')
+          
+          # Get workflow info
+          workflow_info=$(curl -s https://api.github.com/repos/$repo/actions/runs/${GITHUB_RUN_ID})
+          workflow_duration=$(echo "$workflow_info" | jq -r '.run_duration_ms // 0')
+          workflow_attempt=$(echo "$workflow_info" | jq -r '.run_attempt // 1')
+          
+          echo "STARS=$stars" >> $GITHUB_OUTPUT
+          echo "FORKS=$forks" >> $GITHUB_OUTPUT
+          echo "WATCHERS=$watchers" >> $GITHUB_OUTPUT
+          echo "ISSUES=$issues" >> $GITHUB_OUTPUT
+          echo "LANGUAGE=$language" >> $GITHUB_OUTPUT
+          echo "SIZE=$size" >> $GITHUB_OUTPUT
+          echo "LICENSE=$license" >> $GITHUB_OUTPUT
+          echo "DESCRIPTION=$description" >> $GITHUB_OUTPUT
+          echo "COMMIT_MESSAGE=$commit_message" >> $GITHUB_OUTPUT
+          echo "COMMIT_AUTHOR=$commit_author" >> $GITHUB_OUTPUT
+          echo "COMMIT_DATE=$commit_date" >> $GITHUB_OUTPUT
+          echo "WORKFLOW_DURATION=$workflow_duration" >> $GITHUB_OUTPUT
+          echo "WORKFLOW_ATTEMPT=$workflow_attempt" >> $GITHUB_OUTPUT
+
+      - name: � Advanced Telegram Notification – Deployment
+        run: |
+          NOW=$(date '+%B %d, %Y at %I:%M %p')
+          BRANCH=${GITHUB_REF#refs/heads/}
+          COMMIT_SHORT=${GITHUB_SHA:0:7}
+          
+          TEXT="🚀 **DEPLOYMENT COMPLETED SUCCESSFULLY!**
+          
+          📊 **REPOSITORY STATISTICS:**
+          ⭐ **Stars:** ${{ steps.repo_info.outputs.STARS }} | 🍴 **Forks:** ${{ steps.repo_info.outputs.FORKS }}
+          👁️ **Watchers:** ${{ steps.repo_info.outputs.WATCHERS }} | 🐛 **Open Issues:** ${{ steps.repo_info.outputs.ISSUES }}
+          💾 **Size:** ${{ steps.repo_info.outputs.SIZE }}KB | 🔤 **Language:** ${{ steps.repo_info.outputs.LANGUAGE }}
+          📄 **License:** ${{ steps.repo_info.outputs.LICENSE }}
+          
+          🔄 **DEPLOYMENT DETAILS:**
+          👤 **Developer:** ${{ github.actor }}
+          📁 **Repository:** [${{ github.repository }}](https://github.com/${{ github.repository }})
+          🌿 **Branch:** \`$BRANCH\`
+          🔗 **Commit:** [\`$COMMIT_SHORT\`](https://github.com/${{ github.repository }}/commit/${GITHUB_SHA})
+          📝 **Commit Message:** _${{ steps.repo_info.outputs.COMMIT_MESSAGE }}_
+          ✍️ **Commit Author:** ${{ steps.repo_info.outputs.COMMIT_AUTHOR }}
+          
+          ⚡ **WORKFLOW INFO:**
+          🔄 **Run ID:** ${{ github.run_id }}
+          🔢 **Run Number:** ${{ github.run_number }}
+          🎯 **Attempt:** ${{ steps.repo_info.outputs.WORKFLOW_ATTEMPT }}
+          🕐 **Time:** $NOW (Asia/Dhaka)
+          
+          📖 **LINKS:**
+          🌐 [View Live Site](${{ steps.deployment.outputs.page_url }})
+          📊 [View Workflow](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          🔍 [View Commit](https://github.com/${{ github.repository }}/commit/${GITHUB_SHA})
+          
+          📈 **Description:** ${{ steps.repo_info.outputs.DESCRIPTION }}"
+          
           curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
             -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
             -d parse_mode="Markdown" \
@@ -75,14 +147,15 @@ jobs:
     steps:
       - name: 🐞 Telegram Notification – New Issue
         run: |
-          NOW=$(date '+%Y-%m-%d %H:%M:%S')
-          TEXT="➠ New Issue Created
-          ➠ Name: ${{ github.actor }}
-          ➠ Repository: [${{ github.repository }}](https://github.com/${{ github.repository }})
-          ➠ Title: _${{ github.event.issue.title }}_
-          ➠ Time: $NOW (Asia/Dhaka)
+          NOW=$(date '+%B %d, %Y at %I:%M %p')
+          TEXT="🐛 **New Issue Created!**
           
-          [🔗 View Issue](${{ github.event.issue.html_url }})"
+          👤 **Author:** ${{ github.actor }}
+          📁 **Repository:** [${{ github.repository }}](https://github.com/${{ github.repository }})
+          📝 **Title:** _${{ github.event.issue.title }}_
+          🕐 **Time:** $NOW
+          
+          🔗 [View Issue](${{ github.event.issue.html_url }})"
           curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
             -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
             -d parse_mode="Markdown" \
@@ -95,17 +168,18 @@ jobs:
     steps:
       - name: 💬 Telegram Notification – New Issue Comment
         run: |
-          NOW=$(date '+%Y-%m-%d %H:%M:%S')
+          NOW=$(date '+%B %d, %Y at %I:%M %p')
           ISSUE_TITLE="${{ github.event.issue.title }}"
           COMMENT_BODY=$(echo "${{ github.event.comment.body }}" | head -c 200)
-          TEXT="➠ New Comment on Issue
-          ➠ Name: ${{ github.actor }}
-          ➠ Repository: [${{ github.repository }}](https://github.com/${{ github.repository }})
-          ➠ Issue: _${ISSUE_TITLE}_
-          ➠ Comment: _${COMMENT_BODY}..._
-          ➠ Time: $NOW (Asia/Dhaka)
+          TEXT="💬 **New Comment on Issue!**
           
-          [🔗 View Comment](${{ github.event.comment.html_url }})"
+          👤 **Author:** ${{ github.actor }}
+          📁 **Repository:** [${{ github.repository }}](https://github.com/${{ github.repository }})
+          🐛 **Issue:** _${ISSUE_TITLE}_
+          💭 **Comment:** _${COMMENT_BODY}..._
+          🕐 **Time:** $NOW
+          
+          🔗 [View Comment](${{ github.event.comment.html_url }})"
           curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
             -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
             -d parse_mode="Markdown" \
@@ -118,13 +192,14 @@ jobs:
     steps:
       - name: ⭐ Telegram Notification – New Star
         run: |
-          NOW=$(date '+%Y-%m-%d %H:%M:%S')
-          TEXT="➠ New Star!
-          ➠ Name: ${{ github.actor }}
-          ➠ Repository: [${{ github.repository }}](https://github.com/${{ github.repository }})
-          ➠ Time: $NOW (Asia/Dhaka)
+          NOW=$(date '+%B %d, %Y at %I:%M %p')
+          TEXT="⭐ **New Star Received!**
           
-          ⭐ Thank you!"
+          👤 **Starred by:** ${{ github.actor }}
+          📁 **Repository:** [${{ github.repository }}](https://github.com/${{ github.repository }})
+          🕐 **Time:** $NOW
+          
+          🎉 **Thank you for starring the repository!**"
           curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
             -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
             -d parse_mode="Markdown" \
@@ -137,13 +212,14 @@ jobs:
     steps:
       - name: 🍴 Telegram Notification – New Fork
         run: |
-          NOW=$(date '+%Y-%m-%d %H:%M:%S')
-          TEXT="➠ New Fork!
-          ➠ Name: ${{ github.actor }}
-          ➠ Repository: [${{ github.repository }}](https://github.com/${{ github.repository }})
-          ➠ Time: $NOW (Asia/Dhaka)
+          NOW=$(date '+%B %d, %Y at %I:%M %p')
+          TEXT="🍴 **New Fork Created!**
           
-          🍴 Happy forking!"
+          👤 **Forked by:** ${{ github.actor }}
+          📁 **Repository:** [${{ github.repository }}](https://github.com/${{ github.repository }})
+          🕐 **Time:** $NOW
+          
+          � **Happy forking & coding!**"
           curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
             -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
             -d parse_mode="Markdown" \
@@ -156,39 +232,364 @@ jobs:
     steps:
       - name: 🔀 Telegram Notification – Pull Request
         run: |
-          NOW=$(date '+%Y-%m-%d %H:%M:%S')
+          NOW=$(date '+%B %d, %Y at %I:%M %p')
           PR_TITLE="${{ github.event.pull_request.title }}"
           PR_URL="${{ github.event.pull_request.html_url }}"
           ACTION="${{ github.event.action }}"
           MERGED="${{ github.event.pull_request.merged }}"
           MSG=""
           if [ "$ACTION" = "opened" ] || [ "$ACTION" = "reopened" ]; then
-            MSG="➠ Pull Request $ACTION
-            ➠ Name: ${{ github.actor }}
-            ➠ Repository: [${{ github.repository }}](https://github.com/${{ github.repository }})
-            ➠ Title: _${PR_TITLE}_
-            ➠ Time: $NOW (Asia/Dhaka)
+            MSG="🔀 **Pull Request ${ACTION^}!**
             
-            [🔗 View PR](${PR_URL})"
+            👤 **Author:** ${{ github.actor }}
+            📁 **Repository:** [${{ github.repository }}](https://github.com/${{ github.repository }})
+            📝 **Title:** _${PR_TITLE}_
+            🕐 **Time:** $NOW
+            
+            🔗 [View PR](${PR_URL})"
           elif [ "$ACTION" = "closed" ] && [ "$MERGED" = "true" ]; then
-            MSG="➠ Pull Request Merged
-            ➠ Name: ${{ github.actor }}
-            ➠ Repository: [${{ github.repository }}](https://github.com/${{ github.repository }})
-            ➠ Title: _${PR_TITLE}_
-            ➠ Time: $NOW (Asia/Dhaka)
+            MSG="✅ **Pull Request Merged!**
             
-            [🔗 View PR](${PR_URL})"
+            👤 **Author:** ${{ github.actor }}
+            📁 **Repository:** [${{ github.repository }}](https://github.com/${{ github.repository }})
+            📝 **Title:** _${PR_TITLE}_
+            🕐 **Time:** $NOW
+            
+            🔗 [View PR](${PR_URL})"
           elif [ "$ACTION" = "closed" ] && [ "$MERGED" = "false" ]; then
-            MSG="➠ Pull Request Closed
-            ➠ Name: ${{ github.actor }}
-            ➠ Repository: [${{ github.repository }}](https://github.com/${{ github.repository }})
-            ➠ Title: _${PR_TITLE}_
-            ➠ Time: $NOW (Asia/Dhaka)
+            MSG="❌ **Pull Request Closed!**
             
-            [🔗 View PR](${PR_URL})"
+            👤 **Author:** ${{ github.actor }}
+            📁 **Repository:** [${{ github.repository }}](https://github.com/${{ github.repository }})
+            📝 **Title:** _${PR_TITLE}_
+            🕐 **Time:** $NOW
+            
+            🔗 [View PR](${PR_URL})"
           fi
           curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
             -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
             -d parse_mode="Markdown" \
             -d disable_web_page_preview=true \
             -d text="$MSG"
+
+  # Advanced Notifications for All Repository Events
+  notify_push:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📤 Push Notification
+        run: |
+          NOW=$(date '+%B %d, %Y at %I:%M %p')
+          BRANCH=${GITHUB_REF#refs/heads/}
+          COMMIT_SHORT=${GITHUB_SHA:0:7}
+          TEXT="📤 **New Push to Main Branch!**
+          
+          👤 **Developer:** ${{ github.actor }}
+          📁 **Repository:** [${{ github.repository }}](https://github.com/${{ github.repository }})
+          🌿 **Branch:** \`$BRANCH\`
+          🔗 **Commit:** [\`$COMMIT_SHORT\`](https://github.com/${{ github.repository }}/commit/${GITHUB_SHA})
+          📝 **Files Changed:** ${{ github.event.head_commit.modified }}
+          🕐 **Time:** $NOW (Asia/Dhaka)
+          
+          📊 [View Commit](https://github.com/${{ github.repository }}/commit/${GITHUB_SHA})"
+          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d parse_mode="Markdown" \
+            -d disable_web_page_preview=true \
+            -d text="$TEXT"
+
+  notify_pr_review:
+    if: github.event_name == 'pull_request_review'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📋 PR Review Notification
+        run: |
+          NOW=$(date '+%B %d, %Y at %I:%M %p')
+          ACTION="${{ github.event.action }}"
+          STATE="${{ github.event.review.state }}"
+          REVIEW_BODY="${{ github.event.review.body }}"
+          
+          if [ "$ACTION" = "submitted" ]; then
+            if [ "$STATE" = "approved" ]; then
+              ICON="✅"
+              STATUS="Approved"
+            elif [ "$STATE" = "changes_requested" ]; then
+              ICON="🔄"
+              STATUS="Changes Requested"
+            else
+              ICON="💭"
+              STATUS="Commented"
+            fi
+          else
+            ICON="📝"
+            STATUS="$ACTION"
+          fi
+          
+          TEXT="$ICON **Pull Request Review $STATUS!**
+          
+          👤 **Reviewer:** ${{ github.actor }}
+          📁 **Repository:** [${{ github.repository }}](https://github.com/${{ github.repository }})
+          🔀 **PR:** _${{ github.event.pull_request.title }}_
+          📝 **Review:** _${REVIEW_BODY}_
+          🕐 **Time:** $NOW (Asia/Dhaka)
+          
+          🔗 [View Review](${{ github.event.review.html_url }})"
+          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d parse_mode="Markdown" \
+            -d disable_web_page_preview=true \
+            -d text="$TEXT"
+
+  notify_pr_review_comment:
+    if: github.event_name == 'pull_request_review_comment'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 💬 PR Review Comment Notification
+        run: |
+          NOW=$(date '+%B %d, %Y at %I:%M %p')
+          ACTION="${{ github.event.action }}"
+          COMMENT_BODY=$(echo "${{ github.event.comment.body }}" | head -c 200)
+          
+          TEXT="💬 **PR Review Comment $ACTION!**
+          
+          👤 **Author:** ${{ github.actor }}
+          📁 **Repository:** [${{ github.repository }}](https://github.com/${{ github.repository }})
+          🔀 **PR:** _${{ github.event.pull_request.title }}_
+          💭 **Comment:** _${COMMENT_BODY}..._
+          🕐 **Time:** $NOW (Asia/Dhaka)
+          
+          🔗 [View Comment](${{ github.event.comment.html_url }})"
+          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d parse_mode="Markdown" \
+            -d disable_web_page_preview=true \
+            -d text="$TEXT"
+
+  notify_release:
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚀 Release Notification
+        run: |
+          NOW=$(date '+%B %d, %Y at %I:%M %p')
+          ACTION="${{ github.event.action }}"
+          RELEASE_NAME="${{ github.event.release.name }}"
+          RELEASE_TAG="${{ github.event.release.tag_name }}"
+          RELEASE_BODY=$(echo "${{ github.event.release.body }}" | head -c 300)
+          
+          if [ "$ACTION" = "published" ]; then
+            ICON="🎉"
+            STATUS="Published"
+          elif [ "$ACTION" = "created" ]; then
+            ICON="📦"
+            STATUS="Created"
+          else
+            ICON="🔄"
+            STATUS="$ACTION"
+          fi
+          
+          TEXT="$ICON **Release $STATUS!**
+          
+          👤 **Publisher:** ${{ github.actor }}
+          📁 **Repository:** [${{ github.repository }}](https://github.com/${{ github.repository }})
+          🏷️ **Release:** _${RELEASE_NAME}_ (${RELEASE_TAG})
+          📝 **Notes:** _${RELEASE_BODY}..._
+          🕐 **Time:** $NOW (Asia/Dhaka)
+          
+          📦 [View Release](${{ github.event.release.html_url }})"
+          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d parse_mode="Markdown" \
+            -d disable_web_page_preview=true \
+            -d text="$TEXT"
+
+  notify_branch_tag:
+    if: github.event_name == 'create' || github.event_name == 'delete'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🌿 Branch/Tag Notification
+        run: |
+          NOW=$(date '+%B %d, %Y at %I:%M %p')
+          REF_TYPE="${{ github.event.ref_type }}"
+          REF_NAME="${{ github.event.ref }}"
+          ACTION="${{ github.event_name }}"
+          
+          if [ "$ACTION" = "create" ]; then
+            ICON="✨"
+            STATUS="Created"
+          else
+            ICON="🗑️"
+            STATUS="Deleted"
+          fi
+          
+          TEXT="$ICON **$REF_TYPE $STATUS!**
+          
+          👤 **Author:** ${{ github.actor }}
+          📁 **Repository:** [${{ github.repository }}](https://github.com/${{ github.repository }})
+          🏷️ **$REF_TYPE Name:** \`$REF_NAME\`
+          🕐 **Time:** $NOW (Asia/Dhaka)
+          
+          🔗 [View Repository](https://github.com/${{ github.repository }})"
+          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d parse_mode="Markdown" \
+            -d disable_web_page_preview=true \
+            -d text="$TEXT"
+
+  notify_workflow_run:
+    if: github.event_name == 'workflow_run'
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⚙️ Workflow Run Notification
+        run: |
+          NOW=$(date '+%B %d, %Y at %I:%M %p')
+          WORKFLOW_NAME="${{ github.event.workflow_run.name }}"
+          CONCLUSION="${{ github.event.workflow_run.conclusion }}"
+          STATUS="${{ github.event.workflow_run.status }}"
+          BRANCH="${{ github.event.workflow_run.head_branch }}"
+          
+          if [ "$CONCLUSION" = "success" ]; then
+            ICON="✅"
+          elif [ "$CONCLUSION" = "failure" ]; then
+            ICON="❌"
+          elif [ "$CONCLUSION" = "cancelled" ]; then
+            ICON="🚫"
+          else
+            ICON="⚙️"
+          fi
+          
+          TEXT="$ICON **Workflow $STATUS!**
+          
+          👤 **Triggered by:** ${{ github.actor }}
+          📁 **Repository:** [${{ github.repository }}](https://github.com/${{ github.repository }})
+          ⚙️ **Workflow:** _${WORKFLOW_NAME}_
+          🌿 **Branch:** \`$BRANCH\`
+          📊 **Status:** $STATUS
+          🎯 **Conclusion:** $CONCLUSION
+          🕐 **Time:** $NOW (Asia/Dhaka)
+          
+          📊 [View Workflow Run](${{ github.event.workflow_run.html_url }})"
+          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d parse_mode="Markdown" \
+            -d disable_web_page_preview=true \
+            -d text="$TEXT"
+
+  notify_wiki:
+    if: github.event_name == 'gollum'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📚 Wiki Notification
+        run: |
+          NOW=$(date '+%B %d, %Y at %I:%M %p')
+          PAGE_NAME="${{ github.event.pages[0].page_name }}"
+          ACTION="${{ github.event.pages[0].action }}"
+          
+          TEXT="📚 **Wiki Page $ACTION!**
+          
+          👤 **Editor:** ${{ github.actor }}
+          📁 **Repository:** [${{ github.repository }}](https://github.com/${{ github.repository }})
+          📄 **Page:** _${PAGE_NAME}_
+          🕐 **Time:** $NOW (Asia/Dhaka)
+          
+          📚 [View Wiki](https://github.com/${{ github.repository }}/wiki)"
+          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d parse_mode="Markdown" \
+            -d disable_web_page_preview=true \
+            -d text="$TEXT"
+
+  notify_public:
+    if: github.event_name == 'public'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🌍 Repository Made Public
+        run: |
+          NOW=$(date '+%B %d, %Y at %I:%M %p')
+          TEXT="🌍 **Repository Made Public!**
+          
+          👤 **Actor:** ${{ github.actor }}
+          📁 **Repository:** [${{ github.repository }}](https://github.com/${{ github.repository }})
+          🕐 **Time:** $NOW (Asia/Dhaka)
+          
+          🌐 Now everyone can see this repository!
+          🔗 [View Repository](https://github.com/${{ github.repository }})"
+          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d parse_mode="Markdown" \
+            -d disable_web_page_preview=true \
+            -d text="$TEXT"
+
+  notify_status:
+    if: github.event_name == 'status'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📊 Status Check Update
+        run: |
+          NOW=$(date '+%B %d, %Y at %I:%M %p')
+          STATE="${{ github.event.state }}"
+          CONTEXT="${{ github.event.context }}"
+          DESCRIPTION="${{ github.event.description }}"
+          
+          case "$STATE" in
+            "success") ICON="✅" ;;
+            "failure") ICON="❌" ;;
+            "error") ICON="🚨" ;;
+            "pending") ICON="⏳" ;;
+            *) ICON="📊" ;;
+          esac
+          
+          TEXT="$ICON **Status Check Update!**
+          
+          📊 **Status:** $STATE
+          🔍 **Context:** $CONTEXT
+          📝 **Description:** $DESCRIPTION
+          📁 **Repository:** [${{ github.repository }}](https://github.com/${{ github.repository }})
+          🕐 **Time:** $NOW (Asia/Dhaka)
+          
+          🔗 [View Repository](https://github.com/${{ github.repository }})"
+          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d parse_mode="Markdown" \
+            -d disable_web_page_preview=true \
+            -d text="$TEXT"
+
+  notify_page_build:
+    if: github.event_name == 'page_build'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📄 Pages Build Update
+        run: |
+          NOW=$(date '+%B %d, %Y at %I:%M %p')
+          STATUS="${{ github.event.build.status }}"
+          ERROR="${{ github.event.build.error.message }}"
+          
+          if [ "$STATUS" = "built" ]; then
+            ICON="✅"
+            STATUS_TEXT="Successfully Built"
+          else
+            ICON="❌"
+            STATUS_TEXT="Build Failed"
+          fi
+          
+          TEXT="$ICON **GitHub Pages Build $STATUS_TEXT!**
+          
+          📄 **Status:** $STATUS
+          📁 **Repository:** [${{ github.repository }}](https://github.com/${{ github.repository }})
+          🕐 **Time:** $NOW (Asia/Dhaka)"
+          
+          if [ -n "$ERROR" ]; then
+            TEXT="$TEXT
+          
+          ⚠️ **Error:** $ERROR"
+          fi
+          
+          TEXT="$TEXT
+          
+          🔗 [View Repository](https://github.com/${{ github.repository }})"
+          
+          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d parse_mode="Markdown" \
+            -d disable_web_page_preview=true \
+            -d text="$TEXT"
