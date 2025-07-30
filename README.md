@@ -204,8 +204,11 @@ You are free to use, modify, and distribute responsibly.
 ## 👤 Author
 
 Made with ❤️ by **Mohammad Alamin**
+
 Facebook: [@anbuinfosec](https://facebook.com/anbuinfosec)
+
 GitHub: [@anbuinfosec](https://github.com/anbuinfosec)
+
 Email: [anbuinfosec@gmail.com](mailto:anbuinfosec@gmail.com)
 
 ---
