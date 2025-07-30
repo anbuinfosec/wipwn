@@ -16,14 +16,14 @@
   <a href="https://github.com/anbuinfosec/wipwn/network/members">
     <img src="https://img.shields.io/github/forks/anbuinfosec/wipwn?color=blue&style=for-the-badge" />
   </a>
-  <a href="https://github.com/anbuinfosec">
-    <img src="https://img.shields.io/github/followers/anbuinfosec?label=Follow%20Me&style=for-the-badge&logo=github" />
+  <a href="https://github.com/anbuinfosec/wipwn">
+    <img src="https://img.shields.io/github/repo-size/anbuinfosec/wipwn?style=for-the-badge&color=informational" alt="Repo Size" />
   </a>
-  <a href="https://github.com/anbuinfosec/wipwn/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/anbuinfosec/wipwn?style=for-the-badge&color=green" />
+  <a href="https://github.com/anbuinfosec/wipwn/commits/main">
+    <img src="https://img.shields.io/github/last-commit/anbuinfosec/wipwn?style=for-the-badge&color=success" alt="Last Commit" />
   </a>
-  <a href="https://t.me/anbuinfosec_updates">
-    <img src="https://img.shields.io/badge/Telegram-Updates-blue?style=for-the-badge&logo=telegram" />
+  <a href="https://t.me/anbuinfosec_official">
+    <img src="https://img.shields.io/badge/Telegram-Channel-blue?style=for-the-badge&logo=telegram" />
   </a>
 </p>
 
@@ -51,7 +51,7 @@
 <summary><strong>📦 Requirements & Packages</strong></summary>
 
 - ✅ Rooted Android device  
-- ✅ Termux installed ([Download here](https://termux.com/))  
+- ✅ Termux installed ([Download here](https://f-droid.org/en/packages/com.termux/))  
 - ✅ WiFi chipset with monitor mode  
 - ✅ Internet connection for setup  
 
@@ -86,6 +86,53 @@ git clone https://github.com/anbuinfosec/wipwn
 cd wipwn
 chmod +x main.py
 ```
+
+---
+
+## ⚙️ Setup & Update
+
+### Setup (Install launcher script)
+
+After cloning and entering the repo folder, run:
+
+```bash
+python3 setup.py install
+```
+
+This will create a convenient launcher script `wipwn` in your Termux `~/../usr/bin/` directory, so you can run the tool by simply typing:
+
+```bash
+wipwn --help
+```
+
+---
+
+### Uninstall launcher script
+
+If you want to uninstall the launcher script:
+
+```bash
+python3 setup.py uninstall
+```
+
+---
+
+### Update WIPWN to the latest version
+
+To update your local repository to the latest commit from GitHub, use:
+
+```bash
+python3 update.py
+```
+
+Make sure you are inside the `wipwn` directory when running the update script.
+
+---
+
+### Notes
+
+* Running the setup script requires root access in Termux.
+* Ensure `git` is installed to use the update script.
 
 ---
 
@@ -130,6 +177,8 @@ chmod +x main.py
 ├── main.py           → Main WiFi attack script
 ├── README.md         → Project documentation
 ├── vulnwsc.txt       → Vulnerable BSSID database (sample)
+├── setup.py          → Install/uninstall launcher script
+├── update.py         → Git update helper script
 └── wipwn.sh          → Bash launcher script
 ```
 
@@ -171,6 +220,7 @@ You are free to use, modify, and distribute responsibly.
 ## 👤 Author
 
 Made with ❤️ by **Mohammad Alamin**
+Facebook: [@anbuinfosec](https://facebook.com/anbuinfosec)
 GitHub: [@anbuinfosec](https://github.com/anbuinfosec)
 Email: [anbuinfosec@gmail.com](mailto:anbuinfosec@gmail.com)
 
