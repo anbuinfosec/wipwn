@@ -194,22 +194,6 @@ Make sure you are inside the `wipwn` directory when running the update script.
 
 ---
 
-## 💚 Star & Follow
-
-<div align="center" style="text-align: center; margin-top: 20px;">
-
-  <a href="https://github.com/anbuinfosec/wipwn/stargazers" target="_blank">
-    <img src="https://reporoster.com/stars/dark/anbuinfosec/wipwn" alt="Stargazers" style="max-width: 100%; height: auto; margin: 10px auto;" />
-  </a>
-
-  <a href="https://github.com/anbuinfosec/wipwn/network/members" target="_blank">
-    <img src="https://reporoster.com/forks/dark/anbuinfosec/wipwn" alt="Forkers" style="max-width: 100%; height: auto; margin: 10px auto;" />
-  </a>
-
-</div>
-
----
-
 ## 📜 License
 
 Licensed under the [MIT License](LICENSE).
