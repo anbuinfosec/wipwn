@@ -15,7 +15,7 @@ import sys
 import subprocess
 import colors
 
-SCRIPT_NAME = 'wipwn.py'
+SCRIPT_NAME = 'main.py'
 MODULE_NAME = 'wipwn'
 BIN_NAME = 'wipwn'
 
