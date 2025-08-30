@@ -148,6 +148,17 @@ Make sure you are inside the `wipwn` directory when running the update script.
 
 ---
 
+## Or 
+
+| Command                                              | Description        |
+| ---------------------------------------------------- | ------------------ |
+| `sudo wipwn --help`                         | Show help options           |
+| `sudo wipwn -i wlan0 -K`                    | Scan and auto attack        |
+| `sudo wipwn -i wlan0 -b <BSSID> -K`         | Attack specific BSSID       |
+| `sudo wipwn -i wlan0 -b <BSSID> -B -p 1234` | Bruteforce using PIN prefix |
+
+---
+
 ## 🛠 Troubleshooting
 
 | Issue                           | Fix                            |
