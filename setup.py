@@ -53,10 +53,24 @@ if __name__ == "__main__":
             f.write(launcher_code)
         os.chmod(bin_path, 0o775)
         print_info(f"Launcher script installed at {bin_path}")
+        files_to_copy = [
+            '.flake8',
+            'main.py',
+            'colors.py',
+            'config.txt',
+            'update.py',
+            'vulnwsc.txt'
+        ]
 
-        with open(SCRIPT_NAME, 'r') as src, open(lib_path, 'w') as dst:
-            dst.write(src.read())
-        print_info(f"Copied main script to {lib_path}")
+        for filename in files_to_copy:
+            src_path = filename
+            dst_path = os.path.join(prefix, 'lib', python_version, filename)
+            try:
+                with open(src_path, 'r') as src, open(dst_path, 'w') as dst:
+                    dst.write(src.read())
+                print_info(f"Copied {filename} to {dst_path}")
+            except Exception as e:
+                print_warn(f"Failed to copy {filename}: {e}")
 
         print_info(f"Installed successfully! Run the tool with: {BIN_NAME}")
         print_info("Showing usage:\n")
