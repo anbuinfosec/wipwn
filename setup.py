@@ -13,7 +13,7 @@ Disclaimer:
 import os
 import sys
 import subprocess
-import colors
+from colors import GREEN, YELLOW, RED, RESET
 
 SCRIPT_NAME = 'main.py'
 MODULE_NAME = 'wipwn'
@@ -23,13 +23,13 @@ def is_termux():
     return os.getenv("PREFIX", "").startswith("/data/data/com.termux/files/usr")
 
 def print_info(msg):
-    print(f"{colors.green}[+]{colors.reset} {msg}")
+    print(f"{GREEN}[+]{RESET} {msg}")
 
 def print_warn(msg):
-    print(f"{colors.yellow}[!]{colors.reset} {msg}")
+    print(f"{YELLOW}[!]{RESET} {msg}")
 
 def print_error(msg):
-    print(f"{colors.red}[-]{colors.reset} {msg}")
+    print(f"{RED}[-]{RESET} {msg}")
 
 def install_script():
     if not is_termux():
@@ -83,7 +83,7 @@ def uninstall_script():
 
 def main():
     if len(sys.argv) != 2:
-        print(f"{colors.yellow}Usage: python3 setup.py [install | uninstall]{colors.reset}")
+        print(f"{YELLOW}Usage: python3 setup.py [install | uninstall]{RESET}")
         sys.exit(1)
 
     cmd = sys.argv[1].lower()
