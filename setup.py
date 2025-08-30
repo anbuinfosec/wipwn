@@ -15,6 +15,16 @@ import sys
 import subprocess
 from colors import green, yellow, red, reset
 
+red = "\033[1;31m"
+green = "\033[1;32m"
+yellow = "\033[1;33m"
+reset = "\033[0m"
+
+RED = red
+GREEN = green
+YELLOW = yellow
+RESET = reset
+
 SCRIPT_NAME = 'main.py'
 MODULE_NAME = 'wipwn'
 BIN_NAME = 'wipwn'
@@ -55,9 +65,9 @@ if __name__ == "__main__":
         print_info(f"Launcher script installed at {bin_path}")
         files_to_copy = [
             '.flake8',
+            'config.txt',
             'main.py',
             'colors.py',
-            'config.txt',
             'update.py',
             'vulnwsc.txt'
         ]
