@@ -43,7 +43,7 @@ def install_script():
     lib_path = os.path.join(prefix, 'lib', python_version, SCRIPT_NAME)
 
     launcher_code = f'''#!/data/data/com.termux/files/usr/bin/python3
-from {MODULE_NAME} import main as start_program
+from main import main as start_program
 if __name__ == "__main__":
     start_program()
 '''
