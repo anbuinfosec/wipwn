@@ -1,0 +1,16 @@
+© 2025 Mohammad Alamin (@anbuinfosec).  
+All rights reserved.  
+
+This repository and its contents are the intellectual property of Anbu Infosec.  
+Unauthorized copying, modification, distribution, or commercial use of any part  
+of this project is strictly prohibited without prior written permission.  
+
+⚠️ Legal & Ethical Use:
+This tool is NOT made for illegal activities or abuse.  
+WiPwn is created solely for educational, research, and authorized penetration testing purposes.  
+Use it responsibly and only in environments where you have explicit written permission.  
+Any misuse or unauthorized attack using this tool is strictly prohibited and may violate cyber laws.  
+The author holds no responsibility for any damage or misuse caused by third parties.
+
+🔗 Official Telegram Channel: @AnbuSoft  
+🌐 Socials: @anbuinfosec (GitHub, X, YouTube, Instagram, Facebook, Telegram)

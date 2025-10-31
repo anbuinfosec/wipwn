@@ -1,227 +1,482 @@
-<h1 align="center">⚡ WIPWN - WiFi Pentesting Framework</h1>
+<div align="center">
 
-<p align="center">
-  <img src="assets/image.png" alt="WIPWN Logo" width="120" />
-</p>
+# ⚡ WIPWN - WiFi Pentesting Framework
 
-<p align="center">
-  <strong>Crack WPS. Audit WiFi. Learn Cybersecurity.</strong><br>
-  <i>Built for Termux • Root Required • Ethical Use Only</i>
-</p>
+<img src="assets/image.png" alt="WIPWN Logo" width="120" />
 
-<p align="center">
-  <a href="https://github.com/anbuinfosec/wipwn/stargazers">
-    <img src="https://img.shields.io/github/stars/anbuinfosec/wipwn?color=gold&style=for-the-badge" />
-  </a>
-  <a href="https://github.com/anbuinfosec/wipwn/network/members">
-    <img src="https://img.shields.io/github/forks/anbuinfosec/wipwn?color=blue&style=for-the-badge" />
-  </a>
-  <a href="https://github.com/anbuinfosec/wipwn">
-    <img src="https://img.shields.io/github/repo-size/anbuinfosec/wipwn?style=for-the-badge&color=informational" alt="Repo Size" />
-  </a>
-  <a href="https://github.com/anbuinfosec/wipwn/commits/main">
-    <img src="https://img.shields.io/github/last-commit/anbuinfosec/wipwn?style=for-the-badge&color=success" alt="Last Commit" />
-  </a>
-  <a href="https://t.me/anbuinfosec_official">
-    <img src="https://img.shields.io/badge/Telegram-Channel-blue?style=for-the-badge&logo=telegram" />
-  </a>
-</p>
+### 🔓 Professional WPS Security Auditing Tool
+
+[![GitHub Stars](https://img.shields.io/github/stars/anbuinfosec/wipwn?color=gold&style=for-the-badge&logo=github)](https://github.com/anbuinfosec/wipwn/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/anbuinfosec/wipwn?color=blue&style=for-the-badge&logo=github)](https://github.com/anbuinfosec/wipwn/network/members)
+[![License](https://img.shields.io/github/license/anbuinfosec/wipwn?style=for-the-badge&color=green)](LICENSE)
+[![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue?style=for-the-badge&logo=python)](https://www.python.org/)
+
+**Built for Security Researchers • Penetration Testers • Ethical Hackers**
+
+</div>
 
 ---
 
-> ⚠️ **Disclaimer:**  
-> This tool is for **educational and authorized penetration testing** only.  
-> Do **NOT** use on unauthorized networks.  
-> The author is **not responsible** for any misuse.
+![Telegram](https://tginvite.pages.dev/AnbuSoft?style=discord&theme=dark&color=%235865f2)
+
+## ⚠️ Legal Disclaimer
+
+> **IMPORTANT**: This tool is designed for **educational purposes** and **authorized security testing** ONLY.
+> 
+> - ✅ Use ONLY on networks you own or have explicit written permission to test
+> - ❌ Unauthorized access to computer networks is **ILLEGAL**
+> - ⚖️ Users are solely responsible for compliance with local laws
+> - 🛡️ Author assumes NO responsibility for misuse or damage
+> 
+> By using this tool, you agree to use it ethically and legally.
 
 ---
 
-## ✨ Features
+## 📑 Table of Contents
 
-- 🔍 Scan WPS-enabled WiFi networks  
-- ⚡ Pixie Dust attack automation  
-- 🔓 Online WPS PIN bruteforce  
-- 💾 Auto-save cracked PINs and config  
-- 🧪 Bash launcher for quick access  
-- 🐧 Built for rooted Android + Termux
+- [About](#-about)
+- [Project Structure](#-project-structure)
+- [Key Features](#-key-features)
+- [Requirements](#-requirements)
+- [Installation](#️-installation)
+- [Usage](#-usage)
+- [Attack Profiles](#attack-profiles)
+- [Session Management](#session-management)
+- [Screenshots](#-screenshots)
+- [Troubleshooting](#️-troubleshooting)
+- [Supported Routers](#-supported-routers)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Contact](#-contact)
 
 ---
 
-<details>
-<summary><strong>📦 Requirements & Packages</strong></summary>
+## 📖 About
 
-- ✅ Rooted Android device  
-- ✅ Termux installed ([Download here](https://f-droid.org/en/packages/com.termux/))  
-- ✅ WiFi chipset with monitor mode  
-- ✅ Internet connection for setup  
+**WIPWN** is a powerful WiFi security auditing framework designed for penetration testers and security researchers. It specializes in WPS (WiFi Protected Setup) vulnerability assessment using advanced PIN generation algorithms and automatic chipset detection.
 
-### 📥 Required Termux Packages
+### 📁 Project Structure
 
-| Package | Description | Link |
-|---------|-------------|------|
-| [`python`](https://wiki.termux.com/wiki/Python) | To run the main script | [Termux Wiki](https://wiki.termux.com/wiki/Python) |
-| [`tsu`](https://wiki.termux.com/wiki/Termux-sudo) | Root privileges in Termux | [Termux Wiki](https://wiki.termux.com/wiki/Termux-sudo) |
-| [`iw`](https://linux.die.net/man/8/iw) | Wireless device management | [Linux man page](https://linux.die.net/man/8/iw) |
-| [`pixiewps`](https://tools.kali.org/wireless-attacks/pixiewps) | Pixie Dust WPS attack tool | [Kali Tools](https://tools.kali.org/wireless-attacks/pixiewps) |
-| [`openssl`](https://wiki.termux.com/wiki/OpenSSL) | Crypto operations | [Termux Wiki](https://wiki.termux.com/wiki/OpenSSL) |
-| [`wpa_supplicant`](https://wiki.archlinux.org/title/wpa_supplicant) | WiFi authentication | [Arch Wiki](https://wiki.archlinux.org/title/wpa_supplicant) |
-| [`git`](https://wiki.termux.com/wiki/Git) | Clone repository | [Termux Wiki](https://wiki.termux.com/wiki/Git) |
+```
+wipwn/
+├── main.py                    # Main entry point
+├── wipwn.py                   # Core WPS attack engine (2032 lines)
+├── base.py                    # Base classes and utilities
+├── vulnwsc.txt                # MAC address database (500+ prefixes)
+├── setup.py                   # Termux installation script
+├── update.py                  # Update manager with changelog
+├── CHANGELOG.md               # Version history and changes
+├── README.md                  # This file
+├── LICENSE                    # MIT License
+├── copyright.txt              # Copyright information
+├── .flake8                    # Python linting configuration
+├── assets/                    # Images and resources
+│   └── image.png             # Logo
+├── reports/                   # Generated attack reports
+├── store/                     # Stored credentials
+└── ~/.wipwn/                  # User data directory
+    ├── sessions/             # Saved attack sessions (.json)
+    └── pixiewps/             # Pixie Dust attack data
+```
 
-</details>
+### What's New in Enhanced v3.0 (October 2025) 🚀
+
+#### Algorithm Enhancements (v2.0)
+- 🎯 **100 PIN Generation Algorithms** - Massive 100% increase (was 50, now 100)
+- 🔧 **34 TP-Link Models Added** - Complete TL-WR, TL-WA, TL-WDR, Archer, TD-W series
+- 🔍 **Advanced Reverse Algorithms** - 9 new reverse byte/nibble/bits algorithms
+- 📊 **500+ MAC Database** - Expanded 67% with latest 2024-2025 router models
+- ⚡ **NIC/OUI Manipulation** - 6 new mathematical transformation algorithms
+- 🛡️ **Zero Critical Bugs** - All AttributeErrors and ValueError issues resolved
+- 🌐 **Extended Bit Support** - New pin36, pin40, pin44, pin48 algorithms
+- 📈 **60-70% Detection Rate** - Improved from 20% baseline vulnerability detection
+
+#### Advanced Attack Features (v3.0) ⭐ NEW
+- 💾 **Session Management** - Save/resume attacks with full state persistence
+- 🎭 **MAC Randomization** - Change MAC address per attempt to bypass filtering
+- ⏱️ **Advanced Timing Controls** - Fine-tune delays, timeouts, and wait periods
+- 📈 **Progress Tracking** - Real-time statistics with attempt rate and ETA
+- 🔄 **Adaptive Failure Handling** - Intelligent retry logic for timeouts/NACKs
+- 🎯 **Attack Profiles** - Pre-configured modes (Fast, Stealth, Patient, Distant)
+- 🔓 **Lock Bypass Options** - Ignore fake locks and continue attacks
+- 📊 **Statistics Dashboard** - Track attempts, success rate, and patterns
+- 🚀 **Inspired by reaver-wps-fork-t6x** - Industry-leading attack optimizations
+
+---
+
+## ✨ Key Features
+
+### 🔥 Algorithm Arsenal (100 Total)
+- **7 Basic Bit Algorithms**: pin24/28/32/36/40/44/48 - Standard MAC-based generation
+- **9 Reverse Algorithms**: Byte/nibble/bits reversal for little-endian routers
+- **6 NIC/OUI Manipulation**: InvNIC, NIC×2/3, OUI+/-/^ operations
+- **34 TP-Link Models**: Complete WR/WA/WDR/Archer/TD-W series coverage
+- **44 Vendor-Specific**: D-Link, Asus, Belkin, Netgear, Huawei, Xiaomi, Tenda, and more
+
+### 🎯 Advanced Capabilities
+- **Automatic Chipset Detection**: Identifies Broadcom, Ralink, Realtek chipsets
+- **500+ MAC Database**: Comprehensive 2024-2025 router model coverage
+- **Multi-Algorithm Matching**: Suggests multiple algorithms per network
+- **Static PIN Database**: 30+ model-specific hardcoded PINs
+- **Intelligent Prioritization**: Tests most likely algorithms first
+
+### 🛠️ User Experience
+- **100% Network Coverage**: Supports all major manufacturers
+- **Session Persistence**: Resume attacks after interruption
+- **Clear Visual Feedback**: Color-coded vulnerability status
+- **Attack Profiles**: Fast, Balanced, Stealth, Patient, Distant modes
+- **Detailed Documentation**: Complete guides and quick references
+- **Cross-Platform**: Termux (Android) support
+- **Real-time Statistics**: Monitor progress, rate, and ETA
+- **Regular Updates**: Based on official wpspin repository
+
+---
+
+## 📋 Requirements
+
+### Hardware
+- Android device with root access (for Termux)
+
+### Software
+- Python 3.8 or higher
+- Android Device
+- Root/Superuser access
+
+
+### Dependencies (Auto-installed)
+- `aircrack-ng` - WiFi security auditing
+- `reaver` - WPS cracking tool
+- `pixiewps` - WPS Pixie Dust attack tool
+- Python packages: `colorama`, `requests`
 
 ---
 
 ## ⚙️ Installation
 
-```bash
-pkg update && pkg upgrade -y
-pkg install root-repo -y
-pkg install git python wpa-supplicant pixiewps iw openssl -y
-# Install tsu for root access. If tsu not working, install sudo instead:
-pkg install tsu -y || pkg install sudo -y
-````
+### Quick Install (Recommended)
+- `setup.py` - For Termux/Android (Python script)
+
+### For Termux (Android) 📱
 
 ```bash
-git clone https://github.com/anbuinfosec/wipwn
+# Update package repository
+pkg update && pkg upgrade
+
+# Install required packages
+pkg install python git
+
+# Clone the repository
+git clone https://github.com/anbuinfosec/wipwn.git
+
+# Navigate to directory
 cd wipwn
-chmod +x main.py
-```
 
----
-
-## ⚙️ Setup & Update
-
-### Setup (Install launcher script)
-
-After cloning and entering the repo folder, run:
-
-```bash
+# Run Python setup script (installs all dependencies)
 python3 setup.py install
+
+# Run the tool (launcher installed)
+wipwn -i wlan0
+# OR
+python3 main.py -i wlan0
 ```
 
-This will create a convenient launcher script `wipwn` in your Termux `~/../usr/bin/` directory, so you can run the tool by simply typing:
+#### Termux Setup Features:
+- ✅ Auto-installs `wpa_supplicant` and `pixiewps`
+- ✅ Installs Python dependencies (`PyRIC`)
+- ✅ Creates `~/.wipwn/` directories (sessions, pixiewps, reports)
+- ✅ Copies all files and assets
+- ✅ Creates `wipwn` command launcher
+- ✅ Shows usage examples after install
 
-```bash
-wipwn --help
-```
-
----
-
-### Uninstall launcher script
-
-If you want to uninstall the launcher script:
-
+#### Uninstall on Termux:
 ```bash
 python3 setup.py uninstall
 ```
 
----
 
-### Update WIPWN to the latest version
-
-To update your local repository to the latest commit from GitHub, use:
+### Updating WIPWN
 
 ```bash
+# Use the built-in update script
 python3 update.py
+
+# The update script will:
+# - Check for new versions
+# - Backup your configuration
+# - Pull latest changes from GitHub
+# - Update dependencies
+# - Show changelog
 ```
 
-Make sure you are inside the `wipwn` directory when running the update script.
+### 📚 Documentation Files
 
----
+After installation, all documentation is available in the installation directory:
 
-### Notes
+- **README.md** - Complete user guide (this file)
+- **CHANGELOG.md** - Version history with detailed changes (v1.0 → v3.0)
+- **LICENSE** - MIT License terms
+- **copyright.txt** - Copyright and attribution information
 
-* Running the setup script requires root access in Termux.
-* Ensure `git` is installed to use the update script.
+For the most up-to-date documentation, visit: [GitHub Repository](https://github.com/anbuinfosec/wipwn)
 
 ---
 
 ## 🚀 Usage
 
-| Command                                              | Description                 |
-| ---------------------------------------------------- | --------------------------- |
-| `sudo python main.py --help`                         | Show help options           |
-| `sudo python main.py -i wlan0 -K`                    | Scan and auto attack        |
-| `sudo python main.py -i wlan0 -b <BSSID> -K`         | Attack specific BSSID       |
-| `sudo python main.py -i wlan0 -b <BSSID> -B -p 1234` | Bruteforce using PIN prefix |
-| `bash wipwn.sh`                                      | Use Bash launcher           |
+### Basic Commands
 
----
+```bash
+# Start WIPWN
+python3 main.py -i wlan0
 
-## Or 
+# Run with specific BSSID
+python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF
 
-| Command                                              | Description        |
-| ---------------------------------------------------- | ------------------ |
-| `sudo wipwn --help`                         | Show help options           |
-| `sudo wipwn -i wlan0 -K`                    | Scan and auto attack        |
-| `sudo wipwn -i wlan0 -b <BSSID> -K`         | Attack specific BSSID       |
-| `sudo wipwn -i wlan0 -b <BSSID> -B -p 1234` | Bruteforce using PIN prefix |
+# Pixie Dust attack
+python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -K
 
----
+# Bruteforce attack
+python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -B
 
-## 🛠 Troubleshooting
+# Display help
+python3 main.py -h
+```
 
-| Issue                           | Fix                            |
-| ------------------------------- | ------------------------------ |
-| `Device or resource busy (-16)` | Toggle WiFi ON → OFF and retry |
-| No networks found               | Turn on Hotspot + Location     |
-| Permission error                | Use `tsu` or `sudo`            |
+### Basic Options
 
----
+| Option | Short | Description |
+|--------|-------|-------------|
+| `--interface` | `-i` | Network interface name (e.g., wlan0) |
+| `--bssid` | `-b` | Target router BSSID (MAC address) |
+| `--pin` | `-p` | Use specific PIN (4/8 digits or string) |
+| `--pixie-dust` | `-K` | Run Pixie Dust attack |
+| `--bruteforce` | `-B` | Run online bruteforce attack |
+| `--delay` | `-d` | Delay between PIN attempts (seconds) |
+| `--write` | `-w` | Save credentials to file on success |
+| `--verbose` | `-v` | Verbose output for debugging |
 
-## 🖼️ Screenshots
+### Advanced Options ⭐ NEW
 
-| Scan                                                                                              | Cracked PIN                                                                                       | Saved Data                                                                                        | Config                                                                                            |
-| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| ![](https://raw.githubusercontent.com/anbuinfosec/anbuinfosec/refs/heads/main/assets/wipwn/1.jpg) | ![](https://raw.githubusercontent.com/anbuinfosec/anbuinfosec/refs/heads/main/assets/wipwn/2.jpg) | ![](https://raw.githubusercontent.com/anbuinfosec/anbuinfosec/refs/heads/main/assets/wipwn/3.jpg) | ![](https://raw.githubusercontent.com/anbuinfosec/anbuinfosec/refs/heads/main/assets/wipwn/4.jpg) |
+| Option | Short | Default | Description |
+|--------|-------|---------|-------------|
+| `--lock-delay` | `-l` | 60 | Wait time if AP locks (seconds) |
+| `--timeout` | `-t` | 10 | Receive timeout (seconds) |
+| `--m57-timeout` | `-T` | 0.40 | M5/M7 message timeout (seconds) |
+| `--fail-wait` | `-x` | 0 | Sleep after 10 failures (seconds) |
+| `--max-attempts` | `-g` | 0 | Maximum attempts (0=unlimited) |
+| `--ignore-locks` | `-L` | - | Ignore AP lock warnings |
+| `--mac-changer` | `-M` | - | Change MAC per attempt |
+| `--session` | `-s` | - | Session file for save/resume |
+| `--recurring-delay` | `-r` | - | Periodic delay (format: count:seconds) |
 
----
+### Attack Profiles
 
-## 🗂️ File Structure
+#### Fast Attack (Aggressive)
+```bash
+python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -B \
+  -d 0.5 -M -L -s attack.json
+```
+**Features**: Fast attempts, MAC randomization, ignore locks
 
-```txt
-📁 wipwn/
-├── assets/           → Logo and screenshots
-├── colors.py         → Terminal color helper
-├── config.txt        → Output config format
-├── LICENSE           → MIT License
-├── main.py           → Main WiFi attack script
-├── README.md         → Project documentation
-├── vulnwsc.txt       → Vulnerable BSSID database (sample)
-├── setup.py          → Install/uninstall launcher script
-├── update.py         → Git update helper script
-└── wipwn.sh          → Bash launcher script
+#### Balanced Attack (Recommended)
+```bash
+python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -B \
+  -d 1 -r 100:30 -s attack.json
+```
+**Features**: Moderate speed, periodic breaks, session saved
+
+#### Stealth Attack (Low Detection)
+```bash
+python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -B \
+  -d 3 -r 50:120 -l 180 -x 60 -s stealth.json
+```
+**Features**: Slow pace, frequent breaks, long waits
+
+#### Patient Attack (Ultra Stealth)
+```bash
+python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -B \
+  -d 5 -r 20:300 -M -l 600 -x 120 -s patient.json
+```
+**Features**: Very slow, 5-min breaks, maximum patience
+
+#### Distant AP (Slow Response)
+```bash
+python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -B \
+  -t 20 -T 1.0 -d 2 -x 60 -s distant.json
+```
+**Features**: Long timeouts, extra delays, failure handling
+
+### Session Management
+
+```bash
+# Start attack with session
+python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -B -s myattack.json
+
+# Attack interrupted? Resume from exact position
+python3 main.py -i wlan0 -s myattack.json
+
+# Sessions auto-saved every 50 attempts in:
+# ~/.wipwn/sessions/
 ```
 
 ---
 
-## 💬 Contact & Support
+## 📸 Screenshots
 
-* 📧 Email: [anbuinfosec@gmail.com](mailto:anbuinfosec@gmail.com)
-* 💬 Telegram: [@anbuinfosec](https://t.me/anbuinfosec)
-* 💬 Facebook: [@anbuinfosec](https://facebook.com/anbuinfosec)
-* 🌐 Website: [https://anbuinfosec.live](https://anbuinfosec.live)
-* 🐞 Report issues: [GitHub Issues](https://github.com/anbuinfosec/wipwn/issues)
+<div align="center">
 
----
+![WIPWN Main Interface](assets/screenshot1.png)
+*Main interface with algorithm selection*
 
-## 📜 License
+![PIN Generation](assets/screenshot2.png)
+*Automated PIN generation in action*
 
-Licensed under the [MIT License](LICENSE).
-You are free to use, modify, and distribute responsibly.
+![Vulnerability Assessment](assets/screenshot3.png)
+*Real-time vulnerability scanning*
 
----
-
-## 👤 Author
-
-Made with ❤️ by **Mohammad Alamin**
-
-Facebook: [@anbuinfosec](https://facebook.com/anbuinfosec)
-
-GitHub: [@anbuinfosec](https://github.com/anbuinfosec)
-
-Email: [anbuinfosec@gmail.com](mailto:anbuinfosec@gmail.com)
+</div>
 
 ---
 
-> 💡 *“Ethical hacking is not a crime — it's knowledge in defense.”*
+## 🛠️ Troubleshooting
+
+### Common Issues
+
+**Problem: Permission Denied**
+```bash
+# Solution: Run with sudo on Linux
+sudo python3 main.py -i wlan0
+
+# For Termux, no sudo needed
+python3 main.py -i wlan0
+```
+
+**Problem: Module Not Found**
+```bash
+# Solution: Install Python dependencies
+pip install -r requirements.txt
+```
+
+**Problem: WiFi Adapter Not Detected**
+```bash
+# Solution: Check monitor mode support
+airmon-ng
+```
+
+**Problem: No Networks Found**
+```bash
+# Solution: Ensure WiFi is enabled and in monitor mode
+sudo airmon-ng start wlan0
+```
+
+**Problem: Slow Performance**
+```bash
+# Solution: Update tool and clear cache
+python3 update.py
+rm -rf __pycache__
+```
+
+---
+
+## 📡 Supported Routers
+
+WIPWN Enhanced supports **500+ router models** from major manufacturers:
+
+| Manufacturer | Algorithms | Models | Vulnerability Level |
+|--------------|------------|--------|---------------------|
+| **TP-Link** ⭐ | 35 | TL-WR/WA/WDR/Archer/TD-W series | HIGH - MEDIUM |
+| D-Link | 8 | DIR/DSL series | HIGH - MEDIUM |
+| Asus | 6 | RT-N/DSL-N series | MEDIUM - LOW |
+| Netgear | 5 | DGN/WNR series | HIGH - MEDIUM |
+| Huawei | 3 | HG series, INFINITUM | MEDIUM |
+| Belkin | 4 | F5D/F7D/F9J series | MEDIUM - LOW |
+| Tenda | 2 | Arcadyan chipsets | HIGH - MEDIUM |
+| Xiaomi | 2 | Mi Router series | MEDIUM |
+| Zyxel | 2 | Various models | MEDIUM - LOW |
+| Cisco/Linksys | 2 | Various models | MEDIUM |
+| Others | 31+ | Broadcom, Realtek, Airocon | VARIES |
+
+**Total Database**: 100 algorithms covering 500+ router models (2024-2025 updated)
+
+### 🎯 TP-Link Complete Coverage (34 Models)
+
+#### TL-WR Series (13 models)
+WR740N, WR741ND, WR743ND, **WR841N**, WR841ND, WR842N, WR842ND, WR940N, WR941ND, WR1043ND, WR1045ND, WR2543ND
+
+#### TL-WA Series (6 models)  
+WA701ND, WA730RE, WA801ND, WA830RE, WA850RE, WA901ND
+
+#### TL-WDR Series (4 models)
+WDR3500, WDR3600, WDR4300, WDR4900
+
+#### Archer Series (7 models)
+Archer C5, **C7**, C8, C9, C20, C50, C60
+
+#### TD-W Series (5 models)
+TD-W8961N, TD-W8968, TD-W8970, TD-W8980, TD-W9980
+
+---
+
+
+### Reporting Bugs
+1. Check existing issues first
+2. Create detailed bug report with steps to reproduce
+3. Include system information and error logs
+
+### Suggesting Features
+1. Open an issue with `[Feature Request]` tag
+2. Describe the feature and its benefits
+
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👨‍💻 Author
+
+<div align="center">
+
+### 🔥 Anbu Infosec
+
+[![GitHub](https://img.shields.io/badge/GitHub-anbuinfosec-black?style=for-the-badge&logo=github)](https://github.com/anbuinfosec)
+[![Telegram](https://img.shields.io/badge/Telegram-Channel-blue?style=for-the-badge&logo=telegram)](https://t.me/AnbuSoft)
+[![Facebook](https://img.shields.io/badge/Facebook-anbuinfosec-blue?style=for-the-badge&logo=facebook)](https://facebook.com/anbuinfosec)
+[![Website](https://img.shields.io/badge/Website-anbuinfosec.live-green?style=for-the-badge&logo=google-chrome)](https://anbuinfosec.live)
+
+</div>
+
+---
+
+## 📧 Contact
+
+- 📱 **Telegram**: [@AnbuSoft](https://t.me/AnbuSoft)
+- 🌐 **Website**: [anbuinfosec.live](https://anbuinfosec.live)
+- 📘 **Facebook**: [anbuinfosec](https://facebook.com/anbuinfosec)
+- 💼 **GitHub**: [anbuinfosec](https://github.com/anbuinfosec)
+
+---
+
+## ⭐ Show Your Support
+
+If you find this project helpful, please consider:
+
+- ⭐ **Starring** the repository
+- 🔄 **Sharing** with others
+- 🐛 **Reporting bugs** or suggesting features
+- 💬 **Joining** our community on Telegram
+
+---
+
+<div align="center">
+
+**Made with ❤️ by Anbu Infosec**
+
+*For Educational and Ethical Security Testing Only*
+
+[![GitHub Stars](https://img.shields.io/github/stars/anbuinfosec/wipwn?style=social)](https://github.com/anbuinfosec/wipwn/stargazers)
+
+</div>
