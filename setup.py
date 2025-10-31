@@ -65,8 +65,11 @@ def install_dependencies():
     print_info("Installing dependencies...")
     
     packages = [
-        'wpa_supplicant',
+        'wpa-supplicant',
         'pixiewps',
+        "iw",
+        "openssl",
+        "python"
     ]
     
     try:
@@ -77,13 +80,7 @@ def install_dependencies():
         for pkg in packages:
             print_info(f"Installing {pkg}...")
             subprocess.run(['pkg', 'install', '-y', pkg], check=True)
-        
-        # Install Python dependencies
-        print_info("Installing Python packages...")
-        subprocess.run([sys.executable, '-m', 'pip', 'install', '--upgrade', 'pip'], check=True)
-        subprocess.run([sys.executable, '-m', 'pip', 'install', 'PyRIC'], check=True)
-        
-        print_info("Dependencies installed successfully!")
+    
     except subprocess.CalledProcessError as e:
         print_error(f"Failed to install dependencies: {e}")
         sys.exit(1)
@@ -109,7 +106,6 @@ def install_script():
     if not is_termux():
         print_warn("You don't appear to be running inside Termux. Paths may be incorrect.")
         print_warn("This setup script is designed for Termux on Android.")
-        print_warn("For Linux/macOS, use: sudo bash setup.sh")
         sys.exit(1)
 
     prefix = sys.prefix
@@ -152,8 +148,6 @@ if __name__ == "__main__":
         print_info("\nStep 4: Copying required files...")
         files_to_copy = [
             'main.py',
-            'wipwn.py',
-            'base.py',
             'vulnwsc.txt',
             'copyright.txt',
             '.flake8',
@@ -225,9 +219,7 @@ def uninstall_script():
     
     files_to_remove = [
         'main.py',
-        'wipwn.py',
         'vulnwsc.txt',
-        'base.py',
         'copyright.txt',
         '.flake8',
         'update.py',

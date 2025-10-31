@@ -55,31 +55,8 @@
 
 **WIPWN** is a powerful WiFi security auditing framework designed for penetration testers and security researchers. It specializes in WPS (WiFi Protected Setup) vulnerability assessment using advanced PIN generation algorithms and automatic chipset detection.
 
-### 📁 Project Structure
 
-```
-wipwn/
-├── main.py                    # Main entry point
-├── wipwn.py                   # Core WPS attack engine (2032 lines)
-├── base.py                    # Base classes and utilities
-├── vulnwsc.txt                # MAC address database (500+ prefixes)
-├── setup.py                   # Termux installation script
-├── update.py                  # Update manager with changelog
-├── CHANGELOG.md               # Version history and changes
-├── README.md                  # This file
-├── LICENSE                    # MIT License
-├── copyright.txt              # Copyright information
-├── .flake8                    # Python linting configuration
-├── assets/                    # Images and resources
-│   └── image.png             # Logo
-├── reports/                   # Generated attack reports
-├── store/                     # Stored credentials
-└── ~/.wipwn/                  # User data directory
-    ├── sessions/             # Saved attack sessions (.json)
-    └── pixiewps/             # Pixie Dust attack data
-```
-
-### What's New in Enhanced v3.0 (October 2025) 🚀
+### What's New in Enhanced v3.0 (November 1, 2025) 🚀
 
 #### Algorithm Enhancements (v2.0)
 - 🎯 **100 PIN Generation Algorithms** - Massive 100% increase (was 50, now 100)
@@ -143,12 +120,9 @@ wipwn/
 - Root/Superuser access
 
 
-### Dependencies (Auto-installed)
-- `aircrack-ng` - WiFi security auditing
-- `reaver` - WPS cracking tool
+### Dependencies
 - `pixiewps` - WPS Pixie Dust attack tool
-- Python packages: `colorama`, `requests`
-
+- `wpa_supplicant` - Wi-Fi Protected Access client and IEEE 802.1X supplicant
 ---
 
 ## ⚙️ Installation
@@ -325,14 +299,14 @@ python3 main.py -i wlan0 -s myattack.json
 
 <div align="center">
 
-![WIPWN Main Interface](assets/screenshot1.png)
-*Main interface with algorithm selection*
+![WIPWN Main Interface](https://raw.githubusercontent.com/anbuinfosec/anbuinfosec/refs/heads/main/assets/wipwn/1.jpg)
+*Main interface*
 
-![PIN Generation](assets/screenshot2.png)
-*Automated PIN generation in action*
+![Cracked Result](https://raw.githubusercontent.com/anbuinfosec/anbuinfosec/refs/heads/main/assets/wipwn/2.jpg)
+*Cracked Result*
 
-![Vulnerability Assessment](assets/screenshot3.png)
-*Real-time vulnerability scanning*
+![Stored Data](https://raw.githubusercontent.com/anbuinfosec/anbuinfosec/refs/heads/main/assets/wipwn/3.jpg)
+*Stored Data*
 
 </div>
 
@@ -351,23 +325,6 @@ sudo python3 main.py -i wlan0
 python3 main.py -i wlan0
 ```
 
-**Problem: Module Not Found**
-```bash
-# Solution: Install Python dependencies
-pip install -r requirements.txt
-```
-
-**Problem: WiFi Adapter Not Detected**
-```bash
-# Solution: Check monitor mode support
-airmon-ng
-```
-
-**Problem: No Networks Found**
-```bash
-# Solution: Ensure WiFi is enabled and in monitor mode
-sudo airmon-ng start wlan0
-```
 
 **Problem: Slow Performance**
 ```bash
@@ -473,7 +430,7 @@ If you find this project helpful, please consider:
 
 <div align="center">
 
-**Made with ❤️ by Anbu Infosec**
+**Made with ❤️ by @anbuinfosec**
 
 *For Educational and Ethical Security Testing Only*
 
