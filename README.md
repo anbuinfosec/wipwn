@@ -137,7 +137,8 @@
 pkg update && pkg upgrade
 
 # Install required packages
-pkg install python git
+pkg install root-repo -y
+pkg install git python wpa-supplicant pixiewps iw openssl -y
 
 # Clone the repository
 git clone https://github.com/anbuinfosec/wipwn.git
@@ -149,9 +150,9 @@ cd wipwn
 python3 setup.py install
 
 # Run the tool (launcher installed)
-wipwn -i wlan0
+sudo wipwn -i wlan0
 # OR
-python3 main.py -i wlan0
+sudo python3 main.py -i wlan0
 ```
 
 #### Termux Setup Features:
@@ -201,19 +202,19 @@ For the most up-to-date documentation, visit: [GitHub Repository](https://github
 
 ```bash
 # Start WIPWN
-python3 main.py -i wlan0
+sudo python3 main.py -i wlan0
 
 # Run with specific BSSID
-python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF
+sudo python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF
 
 # Pixie Dust attack
-python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -K
+sudo python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -K
 
 # Bruteforce attack
-python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -B
+sudo python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -B
 
 # Display help
-python3 main.py -h
+sudo python3 main.py -h
 ```
 
 ### Basic Options
@@ -247,35 +248,35 @@ python3 main.py -h
 
 #### Fast Attack (Aggressive)
 ```bash
-python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -B \
+sudo python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -B \
   -d 0.5 -M -L -s attack.json
 ```
 **Features**: Fast attempts, MAC randomization, ignore locks
 
 #### Balanced Attack (Recommended)
 ```bash
-python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -B \
+sudo python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -B \
   -d 1 -r 100:30 -s attack.json
 ```
 **Features**: Moderate speed, periodic breaks, session saved
 
 #### Stealth Attack (Low Detection)
 ```bash
-python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -B \
+sudo python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -B \
   -d 3 -r 50:120 -l 180 -x 60 -s stealth.json
 ```
 **Features**: Slow pace, frequent breaks, long waits
 
 #### Patient Attack (Ultra Stealth)
 ```bash
-python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -B \
+sudo python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -B \
   -d 5 -r 20:300 -M -l 600 -x 120 -s patient.json
 ```
 **Features**: Very slow, 5-min breaks, maximum patience
 
 #### Distant AP (Slow Response)
 ```bash
-python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -B \
+sudo python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -B \
   -t 20 -T 1.0 -d 2 -x 60 -s distant.json
 ```
 **Features**: Long timeouts, extra delays, failure handling
@@ -284,10 +285,10 @@ python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -B \
 
 ```bash
 # Start attack with session
-python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -B -s myattack.json
+sudo python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -B -s myattack.json
 
 # Attack interrupted? Resume from exact position
-python3 main.py -i wlan0 -s myattack.json
+sudo python3 main.py -i wlan0 -s myattack.json
 
 # Sessions auto-saved every 50 attempts in:
 # ~/.wipwn/sessions/
@@ -318,11 +319,11 @@ python3 main.py -i wlan0 -s myattack.json
 
 **Problem: Permission Denied**
 ```bash
-# Solution: Run with sudo on Linux
+# Solution: Run with sudo
 sudo python3 main.py -i wlan0
 
 # For Termux, no sudo needed
-python3 main.py -i wlan0
+sudo python3 main.py -i wlan0
 ```
 
 
