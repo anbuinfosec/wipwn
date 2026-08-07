@@ -169,3 +169,7 @@ test/
 *.log
 base
 .DS_Store
+
+# ignoring pixiewps folder
+pixiewps-extend/*
+obfuscate.py

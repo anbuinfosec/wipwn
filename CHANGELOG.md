@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.1] - 2026-08-07 🔧 Pixiewps & Termux workflow upgrades
+
+### Added
+- `--install pixiewps-extend` to build and install the bundled Pixiewps extension.
+- `--qr` / `--ssid` / `--password` for Wi-Fi QR payload output on Android/Termux.
+- Version reporting from a dedicated `VERSION` file.
+- Better diagnostics for interfaces, dependencies, WPS tools, and Pixiewps compatibility.
+
+### Improved
+- Safer subprocess execution with timeouts and captured output.
+- More informative Pixiewps parsing for common failure states such as insufficient data and WPS failures.
+- Termux-aware installation and cleanup behavior for the bundled extension.
+- Documentation updates for installation, troubleshooting, and feature usage.
+
+### Fixed
+- Interface auto-detection now prefers real wireless interfaces while ignoring loopback and virtual networking devices.
+- Pixiewps reporting no longer relies on brittle assumptions and now surfaces more useful status/details.
+
 ## [3.0.1] - 2026-03-16 📱 Termux Support, Advanced Features & UI Overhaul
 
 ### 🎉 Major Features & Improvements

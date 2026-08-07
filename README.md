@@ -1,8 +1,8 @@
-# WIPWN - WiFi WPS Penetration Testing Tool
+# WIPWN - WiFi WPS Penetration Testing Tool 🎯
 
 Fast and automated WiFi WPS PIN cracking tool with advanced attack features.
 
-> **⚠️ Note**: WIPWN is optimized for **Termux From F-Dorid** on Android. For best results and compatibility, use Termux. Kali/Debian support is legacy.
+> **⚠️ Note**: WIPWN is optimized for **Termux From F-Droid** on Android. For best results and compatibility, use Termux. Kali/Debian support is legacy.
 
 ---
 
@@ -16,6 +16,32 @@ Fast and automated WiFi WPS PIN cracking tool with advanced attack features.
   </a>
 </p>
 
+## 🚀 Features
+
+### Core Capabilities
+- **Advanced WPS Scanning:** Features a managed mode WPS scanner that does not strictly require monitor mode to find vulnerable APs.
+- **Smart Interface Selection:** Automatically detects and selects the best wireless interface if `-i` or `--interface` is not provided.
+- **Cross-Platform Diagnostics:** Native environment checks (`--doctor`, `--dependencies`, `--interfaces`) tailored for Linux and Android (Termux).
+
+### Attack Methods
+- **Pixie Dust Attack:** Exploits low entropy in some APs' PRNG (`-K`, `--pixie-dust`).
+- **Pixie Force:** Runs Pixiewps with forced full-range bruteforcing (`-F`, `--pixie-force`).
+- **Online Bruteforce:** Traditional WPS PIN bruteforce (`-B`, `--bruteforce`).
+- **Dictionary Attack:** Fast password testing using a custom or default wordlist (`--dictionary-attack`).
+- **Push Button Connect (PBC):** WPS push button connection simulation (`--pbc`).
+
+### Reconnaissance & Intelligence
+- **Vulnerability Checks:** Automatically detects weak WPS algorithms and compares targets against a known vulnerable devices database.
+- **Signal Analysis:** Evaluates signal strength and patterns for better attack targeting.
+- **Rate Limit Detection:** Proactively checks if the target AP implements rate-limiting.
+
+### Evasion & Bypasses
+- **MAC Spoofing:** Randomize MAC address on every attempt or use a custom MAC (`--spoof-mac`, `--custom-mac`).
+- **Rate Limit Bypass:** Intelligent delays, sleep on failure, and channel hopping to evade detection and locks (`--bypass-rate-limit`, `--channel-hop`).
+- **Ignore Locks:** Optionally continue attacking even when the AP announces a WPS lock (`-L`).
+
+---
+
 ## 📦 Installation
 
 ### Prerequisites
@@ -24,7 +50,6 @@ Fast and automated WiFi WPS PIN cracking tool with advanced attack features.
 - wpa_supplicant
 - pixiewps
 - Termux
-
 
 ### Install (Termux)
 
@@ -43,54 +68,11 @@ chmod +x main.py
 ## 🗑️ Uninstall
 
 ```bash
-
 # Remove wipwn
 rm -rf /path/to/wipwn
-```
-
-```bash
 
 # Remove sessions/data (optional)
 rm -rf ~/.Wipwn/
-```
-
----
-
-## 🚀 Basic Commands
-
-### Start WiFi Scanning
-```bash
-sudo python3 main.py -i wlan0
-```
-
-### Pixie Dust Attack
-```bash
-sudo python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -K
-```
-
-### Brute Force Attack
-```bash
-sudo python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -B
-```
-
-### Dictionary Attack
-```bash
-sudo python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF --dictionary-attack --wordlist /path/to/wordlist.txt
-```
-
-### With Results Saving
-```bash
-sudo python3 main.py -i wlan0 -K -w
-```
-
-### Auto-add to Vulnerability List
-```bash
-sudo python3 main.py -i wlan0 -K --auto-vuln-list
-```
-
-### Resume Session
-```bash
-sudo python3 main.py -i wlan0 --resume-session mysession
 ```
 
 ---
@@ -107,7 +89,7 @@ sudo python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -K
 
 ### 2. Multi-threaded Bruteforce
 ```bash
-sudo python3 main.py -i wlan0 --online-bruteforce --bruteforce-threads 8 --pin-limit 5000
+sudo python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF --online-bruteforce --bruteforce-threads 8 --pin-limit 5000
 ```
 
 ### 3. Detect Weak Algorithms
@@ -158,9 +140,9 @@ sudo python3 main.py -i wlan0 --html-report --detailed-report --report-dir ./rep
 sudo python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -p 12345678
 ```
 
-### 10. Push Button Connect
+### 10. QR Code Output
 ```bash
-sudo python3 main.py -i wlan0 --pbc
+sudo python3 main.py --qr --ssid "TargetWiFi" --password "CrackedSecret123"
 ```
 
 ---
@@ -173,7 +155,7 @@ sudo python3 main.py -i wlan0 --pbc
 -B, --bruteforce           Online bruteforce
 -F, --pixie-force          Pixiewps force mode
 --pbc                      Push button connect
---pin PIN                  Use specific PIN
+-p, --pin PIN              Use specific PIN
 --dictionary-attack        Dictionary password attack
 ```
 
@@ -181,7 +163,7 @@ sudo python3 main.py -i wlan0 --pbc
 ```bash
 -i, --interface            Interface (required)
 -b, --bssid               Target BSSID
---session ID              Save/restore session
+-s, --session ID          Save/restore session
 --channel-hop             Enable channel hopping
 --spoof-mac               Spoof MAC address
 ```
@@ -293,54 +275,32 @@ sudo python3 main.py -i wlan0 -b BSSID --dictionary-attack --wordlist wordlist.t
 
 ---
 
-## 💖 Support / Donations
+### 💳 Donation Methods
 
-If you find this project useful, consider supporting its development 🙌
-
----
-
-## 🪙 Donate
-
-### 🪙 Binance Pay (Recommended)
-
-* **UID:** `1189173734`
-
----
-
-### ⚡ USDT (TRC20)
-
-```text
-0x6b21c1acb94f83b52d1e33bb831527e10133a8e0f705b45cc23a644fa897e24c
-```
-
----
-
-### 🟠 Bitcoin (BTC)
-
-```text
-bc1puekadn2dnwc0vyzy0xwl6564geml2kt3ymhvcwvvkdxadpny2l4qy7xxa0
-```
-
----
-
-### 🪶 Litecoin (LTC)
-
-```text
-4AjFZj5hqjhTF18SJeDyFXHYaKrimHbjSKJok7MqizN6
-```
-
----
-
-### 📱 bKash (Merchant)
-
-* **Number:** `01615827704`
-* **Reference:** `Donation`
-
----
-
-### 🙏 Thank You
-
-Every contribution helps keep this project alive ❤️
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>💵 USDT (BEP20)</b></td>
+      <td align="center"><b>📱 bKash</b></td>
+      <td align="center"><b>💎 GRAM (TON)</b></td>
+    </tr>
+    <tr>
+      <td align="center"><img src="./assets/donate/usdt.png" width="250" height="250" alt="USDT BEP20 QR"></td>
+      <td align="center"><img src="assets/donate/bkash.png" width="250" height="250" alt="bKash QR"></td>
+      <td align="center"><img src="assets/donate/gram.png" width="250" height="250" alt="GRAM TON QR"></td>
+    </tr>
+    <tr>
+      <td align="center"><code>0x3ad5146f733ff16e2251<br>f5da45aeb06438f7bd48</code></td>
+      <td align="center"><code>01615827704</code></td>
+      <td align="center"><code>UQD4EaT4BWECPqZT16kt<br>BgfLY7oS0N_mBdVaKxms<br>t3tOOEQw</code></td>
+    </tr>
+    <tr>
+      <td align="center">BNB Smart Chain</td>
+      <td align="center">BanglaQr</td>
+      <td align="center">The Open Network</td>
+    </tr>
+  </table>
+</div>
 
 ---
 
