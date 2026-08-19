@@ -40,10 +40,10 @@ The project checks for the following tools when present:
 - `python`
 - `iw`
 - `ip`
-- `aircrack-ng`
-- `reaver`
-- `wash`
-- `bully`
 - `pixiewps`
+- ~~aircrack-ng~~
+- ~~reaver~~
+- ~~wash~~
+- ~~bully~~
 
 Missing tools are reported without attempting to install them automatically.

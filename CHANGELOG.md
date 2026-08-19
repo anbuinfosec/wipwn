@@ -6,8 +6,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [3.3.0] - 2026-08-20 🛠️ Stealth Updates & Compatibility Enhancements
 
-## [0.2.1] - 2026-08-07 🔧 Pixiewps & Termux workflow upgrades
+### Added
+- New command-line flags for advanced control:
+  - `--qr` - Show qr code for connect wifi for mobile user
+  - `--doctor` - Show system requirements & detect devices compatiblity
+  - `--interfaces` - Show all device interfaces
+  - `--fixroot` - Fix root permissions
+
+### Improved
+- **Wps Alg:** Added more wps pins and alg upgraded
+- **Better UI:** Enhanced color scheme and progress bar
+- **More Helpful Messages:** Clearer error and status reporting
+- **Reduced Redundancy:** Removed duplicate dependency checks
+
+### Fixed
+- Resolved "pixiewps not found" errors with better fallback handling
+- Fixed race conditions in multi-threaded operations
+- Improved handling of network interface detection
+- Fixed session resume functionality
+
+## [3.2.1] - 2026-08-07 🔧 Pixiewps & Termux workflow upgrades
 
 ### Added
 - `--install pixiewps-extend` to build and install the bundled Pixiewps extension.
@@ -401,38 +421,6 @@ This release doubles the algorithm count and provides comprehensive router cover
 
 ---
 
-## Upgrade Guide
-
-### From v1.0 to v2.0
-
-```bash
-# Pull latest changes
-git pull origin main
-
-# No breaking changes - all old commands work
-python3 main.py -i wlan0 -b XX:XX:XX:XX:XX:XX -K
-
-# New algorithms automatically available
-```
-
-### From v2.0 to v3.0
-
-```bash
-# Pull latest changes
-git pull origin main
-
-# Update dependencies
-pip3 install -r requirements.txt
-
-# Old commands still work
-python3 main.py -i wlan0 -b XX:XX:XX:XX:XX:XX -B
-
-# Try new advanced features
-python3 main.py -i wlan0 -b XX:XX:XX:XX:XX:XX -B -d 1 -M -s attack.json
-```
-
----
-
 ## Breaking Changes
 
 ### v3.0.0
@@ -461,31 +449,6 @@ python3 main.py -i wlan0 -K    # Still works
 # v3.0 enhanced commands  
 python3 main.py -i wlan0 -K -s session.json -t 15   # New features
 ```
-
----
-
-## Future Roadmap
-
-### v3.1.0 (Planned)
-- [ ] Automatic chipset detection (Broadcom/Ralink/Realtek)
-- [ ] Enhanced Pixie Dust with automatic parameter tuning
-- [ ] GPU acceleration for PIN generation
-- [ ] Web interface for remote management
-- [ ] Advanced reporting with graphs
-
-### v3.2.0 (Planned)
-- [ ] Machine learning PIN prediction
-- [ ] Network behavior profiling
-- [ ] Automated vulnerability scoring
-- [ ] Multi-target parallel attacks
-- [ ] Cloud session sync
-
-### v4.0.0 (Future)
-- [ ] Complete GUI rewrite
-- [ ] Real-time attack visualization
-- [ ] Professional reporting engine
-- [ ] Enterprise features
-- [ ] API for automation
 
 ---
 

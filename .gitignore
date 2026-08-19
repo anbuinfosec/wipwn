@@ -173,3 +173,5 @@ base
 # ignoring pixiewps folder
 pixiewps-extend/*
 obfuscate.py
+
+pixiewps-extend/*
