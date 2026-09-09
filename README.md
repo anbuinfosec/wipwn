@@ -20,6 +20,13 @@ Fast and automated WiFi WPS PIN cracking tool with advanced attack features.
   </a>
 </p>
 
+### 💳 Donation Methods
+
+<a href="https://donate.anbuinfosec.dev">
+  <img src="https://raw.githubusercontent.com/anbuinfosec/anbuinfosec/refs/heads/main/assets/donation.png" alt="Donate" />
+</a>
+
+
 ## 📦 Installation
 
 ### Prerequisites
@@ -110,35 +117,6 @@ sudo python3 main.py -i wlan0 --html-report --detailed-report --report-dir ./rep
 sudo python3 main.py -i wlan0 -b AA:BB:CC:DD:EE:FF -p 12345678
 ```
 
-
----
-
-### 💳 Donation Methods
-
-<div align="center">
-  <table>
-    <tr>
-      <td align="center"><b>💵 USDT (BEP20)</b></td>
-      <td align="center"><b>📱 bKash</b></td>
-      <td align="center"><b>💎 GRAM (TON)</b></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="./assets/donate/usdt.png" width="250" height="250" alt="USDT BEP20 QR"></td>
-      <td align="center"><img src="assets/donate/bkash.png" width="250" height="250" alt="bKash QR"></td>
-      <td align="center"><img src="assets/donate/gram.png" width="250" height="250" alt="GRAM TON QR"></td>
-    </tr>
-    <tr>
-      <td align="center"><code>0x3ad5146f733ff16e2251<br>f5da45aeb06438f7bd48</code></td>
-      <td align="center"><code>01615827704</code></td>
-      <td align="center"><code>UQD4EaT4BWECPqZT16kt<br>BgfLY7oS0N_mBdVaKxms<br>t3tOOEQw</code></td>
-    </tr>
-    <tr>
-      <td align="center">BNB Smart Chain</td>
-      <td align="center">BanglaQr</td>
-      <td align="center">The Open Network</td>
-    </tr>
-  </table>
-</div>
 
 ---
 
